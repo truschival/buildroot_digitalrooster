@@ -1,8 +1,6 @@
 #!/bin/sh
 
-set -u
 set -e
-set -x
 
 # Add a console on tty1
 if [ -e ${TARGET_DIR}/etc/inittab ]; then
