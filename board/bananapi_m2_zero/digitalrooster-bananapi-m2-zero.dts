@@ -224,14 +224,17 @@
 };
 
 /* I2C Touch controller */
-&i2c1 {
+&i2c0 {
 	status = "okay";
 	ft6236: ft6236@38 {
                 compatible = "focaltech,ft6236";
                 reg = <0x38>;
-
                 interrupt-parent = <&pio>;
-                interrupts = <2 4 2>;  /* Pin PC4, IRQ_TYPE_EDGE_FALLING */
+		/*
+		 * use PA15 as IRQ - PC4 (Pin18) doesn't have IRQ capability
+		 * --> Bridge Pin18 (PC4) to Pin16 (PA15) externally
+		 */
+                interrupts = <0 15 IRQ_TYPE_EDGE_FALLING>;
                 touchscreen-size-x = <240>;
                 touchscreen-size-y = <320>;
         };
