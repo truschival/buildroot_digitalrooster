@@ -1,0 +1,44 @@
+diff -ruN --binary linux-firmware-1baa34868b2c0a004dc595b20678145e3fff83e7-orig/brcm/brcmfmac43430-sdio.txt linux-firmware-1baa34868b2c0a004dc595b20678145e3fff83e7/brcm/brcmfmac43430-sdio.txt
+--- linux-firmware-1baa34868b2c0a004dc595b20678145e3fff83e7-orig/brcm/brcmfmac43430-sdio.txt	1970-01-01 01:00:00.000000000 +0100
++++ linux-firmware-1baa34868b2c0a004dc595b20678145e3fff83e7/brcm/brcmfmac43430-sdio.txt	2019-04-07 14:58:49.000000000 +0200
+@@ -0,0 +1,40 @@
++AvVmid_c0=0x0,0xc8
++aa2g=1
++ag0=255
++boardflags3=0x08000000
++boardflags=0x00404201
++boardnum=22
++boardrev=0x1202
++boardtype=0x0726
++cckbw202gpo=0
++cckdigfilttype=1
++cckpwroffset0=5
++ccode=ALL
++deadman_to=0xffffffff
++devid=0x43e2
++extpagain2g=0
++il0macaddr=00:90:4c:c5:12:38
++legofdmbw202gpo=0x66111111
++macaddr=00:90:4c:c5:12:38
++manfid=0x2d0
++maxp2ga0=84
++mcsbw202gpo=0x77711111
++muxenab=0x1
++nocrc=1
++ofdmdigfilttype=18
++ofdmdigfilttypebe=18
++pa0itssit=0x20
++pa2ga0=-168,6649,-778
++pacalidx2g=32
++papdendidx=61
++papdepsoffset=-36
++papdmode=1
++papdvalidtest=1
++prodid=0x0726
++propbw202gpo=0xdd
++spurconfig=0x3
++sromrev=11
++txpwrbckof=6
++vendid=0x14e4
++wl0id=0x431b
++xtalfreq=37400

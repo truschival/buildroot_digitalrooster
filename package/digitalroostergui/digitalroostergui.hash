@@ -1,0 +1,19 @@
+# Hashes for v0.2.2
+sha256 0156cf7e814f647aa7f897caadc39b00520d64a3e8e6bce0a2e761e94179f29c  DigitalRooster-v0.2.2.tar.gz
+md5 c26a832f09dbce6682b2edf47974b888  DigitalRooster-v0.2.2.tar.gz
+
+# Hashes vor v0.3.0
+md5 c6cdcf735a2ee0fa6cbfe418b18d2e7e  DigitalRooster-v0.3.0.tar.gz
+sha256 9cd563c94e13f82f74cdd66a3c6ca954617b6a65c6fbbcbf94a56291690c0e2d  DigitalRooster-v0.3.0.tar.gz
+
+# Hashes vor v0.4.0
+md5 69a444bc2572d6390c0bfbcc7ac7d744  DigitalRooster-v0.4.0.tar.gz
+sha256 30e67ac0953c02c08a8fff6f43a08fdb6950f97493ed9b66c097f90e30b5c67c  DigitalRooster-v0.4.0.tar.gz
+
+# 0.7.1 Wifi Control
+md5 dfb0a4210308bae0c55968a11862c6b7  v0.7.1.tar.gz
+sha256 1b7d053fd3cc6ca760dd378a235b91d8fdab496fff34140aa639f21dd7619ff1  v0.7.1.tar.gz
+
+# development head
+none   none	digitalroostergui-develop.tar.gz
+

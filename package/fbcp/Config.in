@@ -1,0 +1,5 @@
+config BR2_PACKAGE_FBCP
+	bool "FBCP"
+	help
+	Framebuffer Copy utility to capture /dev/fb0 and display 
+	the content on /dev/fb1

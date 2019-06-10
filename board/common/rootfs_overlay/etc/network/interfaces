@@ -1,0 +1,8 @@
+# default loopback
+auto lo
+iface lo inet loopback
+
+# WIFI brcmfmac
+auto wlan0
+iface wlan0 inet dhcp
+
