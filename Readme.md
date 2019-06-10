@@ -11,7 +11,7 @@ The following extension boards for Raspberry Pi or BananaPi are configured:
 * Grayhill rotary encoder [61C11-01-08-02](http://lgrws01.grayhill.com/web1/images/ProductImages/I-21-22.pdf)
 
 
-![DigitalRooster on hardware](./documentation/figs/Demo_on_hardware.jpg =10x)
+![DigitalRooster on hardware](./documentation/figs/Demo_on_hardware.jpg)
 
 
 ----
