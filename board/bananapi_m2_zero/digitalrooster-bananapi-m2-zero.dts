@@ -194,14 +194,18 @@
 };
 
 
-/* Ilitek GPIO pins */
+/* PiTFT GPIO pins */
 &pio {
-	/* IRQ pin (PC4, Pin18) + DC pin (PA2, Pin22)*/
+	/* IRQ pin (PC4, Pin18 + PA15, Pin16) + DC pin (PA2, Pin22)*/
         pitft_pins: pitft_pins {
 		label = "pitft";
-		allwinner,pins  = "PC4", "PA2";
-		allwinner,function = "gpio_in", "gpio_out";
-		allwinner,pull = <2 0>; /* pullup none */
+		allwinner,pins  = "PC4", "PA15", "PA2";
+		allwinner,function = "gpio_in", "gpio_in", "gpio_out";
+		/* pullup none */
+		allwinner,pull =  <
+		2 /*PC4 pull-up */
+		2 /*PA15 pull-up*/
+		0 /*PA2  none */ >;
         };
 
 };
