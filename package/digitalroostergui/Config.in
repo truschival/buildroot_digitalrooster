@@ -4,6 +4,7 @@ config BR2_PACKAGE_DIGITALROOSTERGUI
 	Digital alarm clock and podcast / internet radio player
 	depends on BR2_PACKAGE_QT5QUICKCONTROLS2 BR2_PACKAGE_QT5MULTIMEDIA
 	depends on BR2_PACKAGE_WPA_SUPPLICANT
+	depends on BR2_PACKAGE_OPENSSL
 	
 if BR2_PACKAGE_DIGITALROOSTERGUI
 ### Version selection
