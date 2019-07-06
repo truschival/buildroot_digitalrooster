@@ -1,5 +1,6 @@
 choice BR2_DIGITALROOSTER_TARGET_BOARD
     prompt "Target Board"
+    default BR2_DIGITALROOSTER_TARGET_RPI_ZERO_W
     help
         Select target board
 
@@ -15,4 +16,5 @@ endchoice
 #-------------------------------------------------------------------------------
 source "$BR2_EXTERNAL_DigitalRooster_PATH/package/digitalroostergui/Config.in"
 source "$BR2_EXTERNAL_DigitalRooster_PATH/package/fbcp/Config.in"
+source "$BR2_EXTERNAL_DigitalRooster_PATH/package/qttestgadget/Config.in"
 #-------------------------------------------------------------------------------

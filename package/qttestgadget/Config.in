@@ -1,0 +1,12 @@
+config BR2_PACKAGE_QTTESTGADGET
+	bool "QT Test Gadget"
+	depends on BR2_PACKAGE_QT5QUICKCONTROLS2
+	depends on BR2_PACKAGE_QT5MULTIMEDIA
+	
+if BR2_PACKAGE_QTTESTGADGET
+
+config BR2_PACKAGE_QTTESTGADGET_DEBUG
+	bool
+	prompt "Build with debug information "
+
+endif #package
