@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Avoid excessive stat(/etc/localtime) calls
+export TZ=:/etc/localtime
+
 export QT_QPA_EGLFS_HEIGHT=240
 export QT_QPA_EGLFS_WIDTH=320
 export QT_QPA_EGLFS_PHYSICAL_WIDTH=58
@@ -21,6 +24,7 @@ export HOME=/root
 
 PATH="/sbin:/bin:/usr/sbin:/usr/bin"
 DAEMON="/usr/bin/DigitalRoosterGui"
+DAEMON_ARGS="--confpath=/persistent/digitalrooster.json --cachedir=/persistent/cache --logfile=/persistent/digitalrooster.log"
 
 test -x "$DAEMON" || exit 0
 
@@ -49,7 +53,7 @@ start() {
 
 stop() {
     printf "Stopping $NAME: "
-    start-stop-daemon -K -q -p $PID
+    start-stop-daemon -K -q -p $PID -- $DAEMON_ARGS 
     [ $? = 0 ] && echo "OK" || echo "FAIL"
 }
 restart() {

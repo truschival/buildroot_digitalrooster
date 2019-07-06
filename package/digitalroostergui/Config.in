@@ -1,11 +1,13 @@
 config BR2_PACKAGE_DIGITALROOSTERGUI
 	bool "Digital Rooster"
-	help
-	Digital alarm clock and podcast / internet radio player
-	depends on BR2_PACKAGE_QT5QUICKCONTROLS2 BR2_PACKAGE_QT5MULTIMEDIA
+	depends on BR2_PACKAGE_QT5QUICKCONTROLS2
+	depends on BR2_PACKAGE_QT5MULTIMEDIA
 	depends on BR2_PACKAGE_WPA_SUPPLICANT
 	depends on BR2_PACKAGE_OPENSSL
-	
+	help
+	Digital alarm clock and podcast / internet radio player
+
+
 if BR2_PACKAGE_DIGITALROOSTERGUI
 ### Version selection
 choice
@@ -32,6 +34,10 @@ config BR2_PACKAGE_DIGITALROOSTERGUI_VERSION_CUSTOM_STRING
 
 config BR2_PACKAGE_DIGITALROOSTERGUI_TEST
 	bool
-	prompt "Built and install unit tests on target"
+	prompt "Build and install unit tests on target"
+
+config BR2_PACKAGE_DIGITALROOSTERGUI_DEBUG
+	bool
+	prompt "Build with debug information "
 
 endif #package
