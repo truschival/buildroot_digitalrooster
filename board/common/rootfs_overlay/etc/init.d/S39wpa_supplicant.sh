@@ -11,7 +11,6 @@ case "$1" in
 	printf "Starting WPA Supplicant:"
 	start-stop-daemon -p $PIDFILE -x $DAEMON -v -m -b -S -- $DAEMON_ARGS
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
-	sleep 2
 	;;
     stop)
 	printf "Stopping WPA Supplicant: "

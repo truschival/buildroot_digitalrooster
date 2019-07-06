@@ -38,7 +38,7 @@ dtdebug=on
 dtparam=spi=on
 dtparam=i2c1=on
 dtparam=i2c_arm=on
-dtoverlay=pitft28-capacitive,rotate=270,speed=34000000,fps=25,debug=1
+dtoverlay=pitft28-capacitive,rotate=270,speed=32000000,fps=25,debug=1
 #---end PiTFT---
 
 #---- HDMI settings for 320x240 Framebuffer -----
@@ -60,8 +60,13 @@ dtoverlay=i2c-rtc,pcf8523
 #--- End RTC
 
 #--- rotary encoder
-dtoverlay=rotary-encoder
+dtoverlay=rotary-encoder-abs
+
 #--- end rotary
+
+#--- VC4 - if enabled QT will not work
+# dtoverlay=vc4-kms-v3d
+#--- end vc4
 
 __CONFIG_TXT_EOF__
 fi
