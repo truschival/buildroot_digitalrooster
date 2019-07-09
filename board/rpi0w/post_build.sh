@@ -1,6 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
+
+BOARD_DIR="$(dirname $0)"
+BOARD_NAME="$(basename ${BOARD_DIR})"
 
 # Add a console on tty1
 if [ -e ${TARGET_DIR}/etc/inittab ]; then
@@ -10,68 +13,14 @@ tty1::respawn:/sbin/getty -L  tty1 0 vt100 # HDMI console' ${TARGET_DIR}/etc/ini
 fi
 
 
-# Install Framebuffer Console cmdline
-for arg in "$@"
-do
-	case "${arg}" in
-		--framebuffer-console)
-			if ! grep  'fbcon=map:10' ${BINARIES_DIR}/rpi-firmware/cmdline.txt;
-			   then
-				   sed -i 's/rootwait/rootwait fbcon=map:10 fbcon=font:VGA8x8/g' \
-					   ${BINARIES_DIR}/rpi-firmware/cmdline.txt
-			fi
-		;;
-	esac
-done
 
-mkdir -p "${TARGET_DIR}/boot"
 
-if ! grep -qE '^#---PiTFT---' "${BINARIES_DIR}/rpi-firmware/config.txt"; then
-	echo "Adding 'PiTFT Parameters' to config.txt (fixes ttyAMA0 serial console)."
-	cat << __CONFIG_TXT_EOF__ >> "${BINARIES_DIR}/rpi-firmware/config.txt"
+##
+# Install custom config.txt & cmdline.txt
+##
+cp ${BOARD_DIR}/config.txt  ${BINARIES_DIR}/rpi-firmware/
+cp ${BOARD_DIR}/cmdline.txt ${BINARIES_DIR}/rpi-firmware/
 
-# fixes rpi3 ttyAMA0 serial console
-dtoverlay=pi3-miniuart-bt
-dtdebug=on
-
-#---PiTFT---
-dtparam=spi=on
-dtparam=i2c1=on
-dtparam=i2c_arm=on
-dtoverlay=pitft28-capacitive,rotate=270,speed=32000000,fps=25,debug=1
-#---end PiTFT---
-
-#---- HDMI settings for 320x240 Framebuffer -----
-hdmi_force_hotplug=1
-max_usb_current=1
-hdmi_group=2
-hdmi_mode=87
-hdmi_cvt 320 240 60 6 0 0 0
-hdmi_drive=1
-#---- HDMI Display -----
-
-#--- Speaker Bonnet
-dtoverlay=hifiberry-dac
-dtoverlay=i2s-mmap
-#--- End SpeakerBonnet
-
-#--- RTC
-dtoverlay=i2c-rtc,pcf8523
-#--- End RTC
-
-#--- rotary encoder
-dtoverlay=rotary-encoder-abs
-
-#--- end rotary
-
-#--- VC4 - if enabled QT will not work
-# dtoverlay=vc4-kms-v3d
-#--- end vc4
-
-__CONFIG_TXT_EOF__
-fi
-
-#--- End PiTFT
 
 ##
 # Add custom Device tree overlays to imges/rpi-firmware/overlays

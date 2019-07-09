@@ -26,5 +26,25 @@ function update_wpa_config() {
     fi
 }
 
+
+# Add /persistent to fstab
+function update_fstab() {
+    local FSTAB_PATH=${TARGET_DIR}/etc/fstab
+    local FSTAB_PERSISTENT_GUARD="# Added by common/post_build.sh"
+    local FSTAB_PERSISTENT_ENTRY="/dev/mmcblk0p3  /persistent     ext4    defaults        0       0"
+    
+    mkdir -p "${TARGET_DIR}/boot"
+        
+	grep -q "${FSTAB_PERSISTENT_GUARD} " ${FSTAB_PATH}
+	if [ $? -eq 1 ];
+	then
+	    echo ${FSTAB_PERSISTENT_GUARD} >> ${FSTAB_PATH}
+	    echo "${FSTAB_PERSISTENT_ENTRY}" >> ${FSTAB_PATH}
+	else
+	    echo "post_build.sh already modified ${FSTAB_PATH} - not changing!"
+	fi
+}
+
 echo "Updating WPA Supplicant config LOCAL_WIFI_NET_CFG=${LOCAL_WIFI_NET_CFG}"
 update_wpa_config
+update_fstab

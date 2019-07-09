@@ -1,0 +1,43 @@
+device_tree=digitalrooster-rpi0w.dtb	
+dtdebug=on
+	
+kernel=zImage
+
+enable_uart=1
+
+# How much memory in MB to assign to the GPU on Pi models having
+# 256, 512 or 1024 MB total memory
+gpu_mem_256=100
+gpu_mem_512=100
+gpu_mem_1024=100
+
+dtoverlay=pi3-miniuart-bt
+
+#---PiTFT---
+dtparam=spi=on
+dtparam=i2c1=on
+dtparam=i2c_arm=on
+dtoverlay=pitft28-capacitive,rotate=270,speed=32000000,fps=25,debug=1
+#---end PiTFT---
+
+#---- HDMI settings for 320x240 Framebuffer -----
+hdmi_force_hotplug=1
+max_usb_current=1
+hdmi_group=2
+hdmi_mode=87
+hdmi_cvt 320 240 60 6 0 0 0
+hdmi_drive=1
+#---- HDMI Display -----
+
+#--- Speaker Bonnet
+dtoverlay=hifiberry-dac
+dtoverlay=i2s-mmap
+#--- End SpeakerBonnet
+
+#--- RTC
+dtoverlay=i2c-rtc,pcf8523
+#--- End RTC
+
+#--- VC4 - if enabled QT will not work
+# dtoverlay=vc4-kms-v3d
+#--- end vc4
