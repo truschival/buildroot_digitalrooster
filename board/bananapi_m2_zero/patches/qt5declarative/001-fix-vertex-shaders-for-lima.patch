@@ -1,0 +1,46 @@
+diff -ruN qt5declarative-5.12.4.orig/src/quick/scenegraph/shaders/smoothcolor.vert qt5declarative-5.12.4/src/quick/scenegraph/shaders/smoothcolor.vert
+--- qt5declarative-5.12.4.orig/src/quick/scenegraph/shaders/smoothcolor.vert	2019-08-25 19:04:57.123247800 +0200
++++ qt5declarative-5.12.4/src/quick/scenegraph/shaders/smoothcolor.vert	2019-08-25 19:07:16.778359451 +0200
+@@ -13,7 +13,8 @@
+     highp vec4 pos = matrix * vertex;
+     gl_Position = pos;
+ 
+-    if (vertexOffset.x != 0.) {
++    //if (vertexOffset.x != 0.)
++    {
+         highp vec4 delta = matrix[0] * vertexOffset.x;
+         highp vec2 dir = delta.xy * pos.w - pos.xy * delta.w;
+         highp vec2 ndir = .5 * pixelSize * normalize(dir / pixelSize);
+@@ -27,7 +28,8 @@
+         gl_Position += scale * delta;
+     }
+ 
+-    if (vertexOffset.y != 0.) {
++    //if (vertexOffset.y != 0.)
++    {
+         highp vec4 delta = matrix[1] * vertexOffset.y;
+         highp vec2 dir = delta.xy * pos.w - pos.xy * delta.w;
+         highp vec2 ndir = .5 * pixelSize * normalize(dir / pixelSize);
+diff -ruN qt5declarative-5.12.4.orig/src/quick/scenegraph/shaders/smoothtexture.vert qt5declarative-5.12.4/src/quick/scenegraph/shaders/smoothtexture.vert
+--- qt5declarative-5.12.4.orig/src/quick/scenegraph/shaders/smoothtexture.vert	2019-08-25 19:04:57.119914503 +0200
++++ qt5declarative-5.12.4/src/quick/scenegraph/shaders/smoothtexture.vert	2019-08-25 19:06:49.771994122 +0200
+@@ -16,7 +16,8 @@
+     gl_Position = pos;
+     texCoord = multiTexCoord;
+ 
+-    if (vertexOffset.x != 0.) {
++    //if (vertexOffset.x != 0.)
++    {
+         highp vec4 delta = qt_Matrix[0] * vertexOffset.x;
+         highp vec2 dir = delta.xy * pos.w - pos.xy * delta.w;
+         highp vec2 ndir = .5 * pixelSize * normalize(dir / pixelSize);
+@@ -31,7 +32,8 @@
+         texCoord.x += scale * texCoordOffset.x;
+     }
+ 
+-    if (vertexOffset.y != 0.) {
++    //if (vertexOffset.y != 0.)
++    {
+         highp vec4 delta = qt_Matrix[1] * vertexOffset.y;
+         highp vec2 dir = delta.xy * pos.w - pos.xy * delta.w;
+         highp vec2 ndir = .5 * pixelSize * normalize(dir / pixelSize);

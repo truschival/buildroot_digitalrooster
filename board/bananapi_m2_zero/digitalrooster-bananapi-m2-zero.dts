@@ -129,7 +129,6 @@
 		rotary-encoder,steps = <32>;
 		rotary-encoder,steps-per-period = <1>;
 	};
-
 };
 
 &mmc0 {
@@ -166,7 +165,7 @@
 
 &uart0 {
 	pinctrl-names = "default";
-	pinctrl-0 = <&uart0_pins_a>;
+	pinctrl-0 = <&uart0_pa_pins>;
 	status = "okay";
 };
 
@@ -183,13 +182,14 @@
 		label = "push_button";
 		allwinner,pins = "PA3";
 		allwinner,function = "gpio_in";
-		line-name = "push_button";
+		gpio-line-names = "push_button";
 	};
 
 	rotary_pins: rotary_pins@0 {
 		allwinner,pins  = "PA0", "PA1";
 		allwinner,function = "gpio_in";
 		allwinner,pull = <0>;
+		gpio-line-names = "rot_a", "rot_b";
 	};
 };
 
@@ -199,32 +199,49 @@
 	/* IRQ pin (PC4, Pin18 + PA15, Pin16) + DC pin (PA2, Pin22)*/
         pitft_pins: pitft_pins {
 		label = "pitft";
-		allwinner,pins  = "PC4", "PA15", "PA2";
-		allwinner,function = "gpio_in", "gpio_in", "gpio_out";
+		allwinner,pins  = "PC4", "PA15", "PA2" , "PC7" ;
+		allwinner,function = "gpio_in", "gpio_in", "gpio_out", "gpio_out";
 		/* pullup none */
 		allwinner,pull =  <
 		2 /*PC4 pull-up */
-		2 /*PA15 pull-up*/
+		2 /*PA15 pull-up Touch IRQ*/
 		0 /*PA2  none */ >;
+		gpio-line-names = "ft-touch", "rt-int", "tft-DC", "tft-rst";
         };
 
 };
 /* Display @ SPI0 */
 &spi0 {
 	status = "okay";
-        pitft: pitft@0{
-                compatible = "ilitek,ili9340";
-                reg = <0>;
+
+        /* pitft: pitft@0{ */
+		/*         compatible = "ilitek,ili934"; */
+		/*         reg = <0>; */
+		/*         pinctrl-names = "default"; */
+		/*         pinctrl-0 = <&pitft_pins>; */
+		/*         spi-max-frequency = <32000000>; */
+		/*         rotate = <270>; */
+		/*         fps = <25>; */
+		/*         bgr; */
+		/*         buswidth = <8>; */
+		/*         dc-gpios = <&pio 0 2 GPIO_ACTIVE_HIGH>; /\* PA2 active high *\/ */
+		/*         debug = <1>; */
+        /* }; */
+
+	/* Display for TinyDRM */
+	display@0{
+		compatible = "adafruit,yx240qv29", "ilitek,ili9341";
+		reg = <0>;
+		spi-max-frequency = <32000000>;
+                dc-gpios = <&pio 0 2 GPIO_ACTIVE_HIGH>; /* PA2 active high */
+		reset-gpios = <&pio 2 7  GPIO_ACTIVE_HIGH>;
+		rotation = <270>;
+		/* backlight = <&backlight>; */
                 pinctrl-names = "default";
                 pinctrl-0 = <&pitft_pins>;
-                spi-max-frequency = <32000000>;
-                rotate = <270>;
-                fps = <25>;
-                bgr;
-                buswidth = <8>;
-                dc-gpios = <&pio 0 2 GPIO_ACTIVE_HIGH>; /* PA2 active high */
-                debug = <1>;
-        };
+
+	};
+
 };
 
 /* I2C Touch controller */
