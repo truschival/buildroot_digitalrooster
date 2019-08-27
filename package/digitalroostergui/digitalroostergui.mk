@@ -23,7 +23,7 @@ DIGITALROOSTERGUI_LICENSE_FILES = LICENSE
 ##
 # Build Configuration
 ##
-DIGITALROOSTERGUI_CONF_OPTS += -DSYSTEM_TARGET_NAME=RPi
+#DIGITALROOSTERGUI_CONF_OPTS += -DSYSTEM_TARGET_NAME=RPi
 
 # Debug config
 ifeq (y, $(BR2_PACKAGE_DIGITALROOSTERGUI_DEBUG))
@@ -32,7 +32,6 @@ ifeq (y, $(BR2_PACKAGE_DIGITALROOSTERGUI_DEBUG))
 	DIGITALROOSTERGUI_CONF_OPTS += -DCMAKE_BUILD_TYPE=Debug
 endif
 
-# build and install Unittests to target
 ifeq (y , $(BR2_PACKAGE_WPA_SUPPLICANT))
 	DIGITALROOSTERGUI_CONF_OPTS += -DHAS_WPA_SUPPLICANT=On
 endif
@@ -50,8 +49,10 @@ endif # install unit tests
 
 #install start script
 define DIGITALROOSTERGUI_POST_INSTALL_TARGET_SCRIPT
-	cp ${DIGITALROOSTERGUI_PKGDIR}/S99digitalrooster.sh ${TARGET_DIR}/etc/init.d/
-	$(INSTALL) -m 0644  ${DIGITALROOSTERGUI_PKGDIR}/digitalrooster.json $(TARGET_DIR)/persistent
+	
+	$(INSTALL) -m 0755 ${DIGITALROOSTERGUI_PKGDIR}/S99digitalrooster.sh  ${TARGET_DIR}/etc/init.d/
+	$(INSTALL) -D -m 0644 ${DIGITALROOSTERGUI_PKGDIR}/digitalrooster-qt.conf ${TARGET_DIR}/etc/default/digitalrooster-qt.conf
+	$(INSTALL) -m 0644 ${DIGITALROOSTERGUI_PKGDIR}/digitalrooster.json $(TARGET_DIR)/persistent
 endef
 
 DIGITALROOSTERGUI_POST_INSTALL_TARGET_HOOKS += \

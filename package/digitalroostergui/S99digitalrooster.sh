@@ -3,19 +3,7 @@
 # Avoid excessive stat(/etc/localtime) calls
 export TZ=:/etc/localtime
 
-export QT_QPA_EGLFS_HEIGHT=240
-export QT_QPA_EGLFS_WIDTH=320
-export QT_QPA_EGLFS_PHYSICAL_WIDTH=58
-export QT_QPA_EGLFS_PHYSICAL_HEIGHT=43
-
-#export QT_QPA_EGLFS_FB=/dev/fb0
-export QT_QPA_FB_FORCE_FULLSCREEN=1
-export QT_QPA_EVDEV_TOUCHSCREEN_PARAMETERS=/dev/input/event1:rotate=90
-
-# export QT_QPA_EGLFS_DEBUG=1
-# export QT_DEBUG_PLUGINS=1
-
-export QT_LOGGING_RULES="*.debug=false;*qml=true;DigitalRooster.VolumeButton.debug=false"
+source /etc/default/digitalrooster-qt.conf
 
 ##
 # Config files in /root/.config
