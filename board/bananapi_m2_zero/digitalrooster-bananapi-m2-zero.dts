@@ -84,11 +84,11 @@
 	gpio_keys {
 		compatible = "gpio-keys";
 		pinctrl-names = "default";
-
-		sw4 {
-			label = "power";
+		status = "ok";
+		rotary_pb {
+			label = "rotary_pb";
 			linux,code = <BTN_0>;
-			gpios = <&r_pio 0 3 GPIO_ACTIVE_LOW>;
+			gpios = <&pio 0 3 GPIO_ACTIVE_LOW>;
 		};
 	};
 
@@ -177,13 +177,15 @@
 
 /* PA0, PA1 (rotary A,B), PA3 (push button) for rotary encoder*/
 &pio {
-	push_button {
-		status = "ok";
-		label = "push_button";
-		allwinner,pins = "PA3";
-		allwinner,function = "gpio_in";
-		gpio-line-names = "push_button";
-	};
+	/* Push button is configured via gpio-keys */
+	/* push_button: pb@0 { */
+	/* 	status = "ok"; */
+	/* 	label = "push_button"; */
+	/* 	allwinner,pins = "PA3"; */
+	/* 	allwinner,function = "gpio_in"; */
+	/* 	allwinner,pull = <0>; */
+	/* 	gpio-line-names = "push_button"; */
+	/* }; */
 
 	rotary_pins: rotary_pins@0 {
 		allwinner,pins  = "PA0", "PA1";
@@ -195,7 +197,10 @@
 
 
 /* PiTFT GPIO pins */
-&pio {
+&pio {	
+	gpio-line-names = "x1", "x2", "x3", "x4";
+
+
 	/* IRQ pin (PC4, Pin18 + PA15, Pin16) + DC pin (PA2, Pin22)*/
         pitft_pins: pitft_pins {
 		label = "pitft";
@@ -208,7 +213,6 @@
 		0 /*PA2  none */ >;
 		gpio-line-names = "ft-touch", "rt-int", "tft-DC", "tft-rst";
         };
-
 };
 /* Display @ SPI0 */
 &spi0 {
@@ -259,4 +263,20 @@
                 touchscreen-size-x = <240>;
                 touchscreen-size-y = <320>;
         };
+
+	ioexp: max7315@21 {
+                #gpio-cells = <2>;
+                compatible = "maxim,max7315";
+                reg = <0x21>;
+                gpio-controller;
+		gpio-line-names = "red","green","blue","bl_pwm";
+        };
+
+	ds1338: rtc@68 {
+		compatible = "dallas,ds1388";
+		reg = <0x68>;
+		trickle-resistor-ohms = <250>;
+		/* trickle-diode-disable; */
+	};
+
 };
