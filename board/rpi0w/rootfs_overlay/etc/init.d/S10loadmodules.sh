@@ -25,3 +25,10 @@ modprobe rotary_encoder
 modprobe snd-soc-pcm512x
 modprobe snd-soc-wm8804
 #disable default audio snd-bcm2835
+
+# Setup Hardware
+echo 22 > /sys/class/gpio/export
+echo in > /sys/class/gpio/gpio22/direction
+cat /sys/class/gpio/gpio22/value
+echo both > /sys/class/gpio/gpio22/edge
+cat /sys/class/gpio/gpio22/value

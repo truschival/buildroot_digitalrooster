@@ -1,6 +1,7 @@
 /dts-v1/;
 
 #include "bcm2708.dtsi"
+#include "bcm2708-rpi.dtsi"
 #include "bcm283x-rpi-csi1-2lane.dtsi"
 
 / {
@@ -8,7 +9,7 @@
 	model = "Raspberry Pi Zero W";
 
 	chosen {
-		bootargs = "8250.nr_uarts=1";
+		bootargs = "coherent_pool=1M 8250.nr_uarts=1";
 	};
 
 	aliases {
@@ -173,6 +174,7 @@
 
 / {
 	gpiokeys: gpiokeys {
+		label = "gpio-keys";
 		compatible = "gpio-keys";
 		OnOff {
 			label = "OnOff";
@@ -183,6 +185,7 @@
 
 	rotary_abs: rotary_abs {
 		compatible = "rotary-encoder";
+		label = "rotary-enc";
 		status = "okay";
 		pinctrl-names = "default";
 		pinctrl-0 = <&rotary_pins>;
