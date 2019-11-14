@@ -23,7 +23,7 @@ DIGITALROOSTERGUI_LICENSE_FILES = LICENSE
 ##
 # Build Configuration
 ##
-#DIGITALROOSTERGUI_CONF_OPTS += -DSYSTEM_TARGET_NAME=RPi
+DIGITALROOSTERGUI_CONF_OPTS += -DSYSTEM_TARGET_NAME=RPi
 
 # Debug config
 ifeq (y, $(BR2_PACKAGE_DIGITALROOSTERGUI_DEBUG))
@@ -49,7 +49,7 @@ endif # install unit tests
 
 #install start script
 define DIGITALROOSTERGUI_POST_INSTALL_TARGET_SCRIPT
-	
+
 	$(INSTALL) -m 0755 ${DIGITALROOSTERGUI_PKGDIR}/S99digitalrooster.sh  ${TARGET_DIR}/etc/init.d/
 	$(INSTALL) -D -m 0644 ${DIGITALROOSTERGUI_PKGDIR}/digitalrooster-qt.conf ${TARGET_DIR}/etc/default/digitalrooster-qt.conf
 	$(INSTALL) -m 0644 ${DIGITALROOSTERGUI_PKGDIR}/digitalrooster.json $(TARGET_DIR)/persistent
