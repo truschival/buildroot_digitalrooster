@@ -35,7 +35,7 @@ dtoverlay=i2s-mmap
 #--- End SpeakerBonnet
 
 #--- RTC
-dtoverlay=i2c-rtc,pcf8523
+# dtoverlay=i2c-rtc,ds1307
 #--- End RTC
 
 #--- VC4 - if enabled QT will not work

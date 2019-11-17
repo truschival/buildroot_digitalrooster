@@ -138,6 +138,23 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&i2c1_pins>;
 	clock-frequency = <100000>;
+
+	ioexp: max7315@21 {
+                #gpio-cells = <2>;
+                compatible = "maxim,max7315";
+                reg = <0x21>;
+                gpio-controller;
+		gpio-line-names = "red","green","blue","bl_pwm",
+		"nc","nc","nc","nc";
+        };
+
+	ds1338: rtc@68 {
+		compatible = "dallas,ds1388";
+		reg = <0x68>;
+		trickle-resistor-ohms = <2000>;
+		/* trickle-diode-disable; */
+	};
+
 };
 
 &i2c2 {
