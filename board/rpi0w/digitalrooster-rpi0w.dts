@@ -149,9 +149,9 @@
         };
 
 	ds1338: rtc@68 {
-		compatible = "dallas,ds1388";
+		compatible = "ti,bq32000";
 		reg = <0x68>;
-		trickle-resistor-ohms = <2000>;
+		trickle-resistor-ohms = <1120>;
 		/* trickle-diode-disable; */
 	};
 
@@ -206,7 +206,7 @@
 		status = "okay";
 		pinctrl-names = "default";
 		pinctrl-0 = <&rotary_pins>;
-		gpios = <&gpio 27 0>, <&gpio 17 0>;
+		gpios = <&gpio 17 0>, <&gpio 27 0>;
 		linux,axis = <0>; /* REL_X */
 		rotary-encoder,encoding = "gray";
 		rotary-encoder,relative-axis;

@@ -1,7 +1,7 @@
 {
     "Alarms": [
         {
-            "enabled": true,
+            "enabled": false,
             "id": "{8364287c-3036-4cd0-b243-0a4f5dd863ae}",
             "period": "workdays",
             "time": "06:30",
@@ -20,12 +20,17 @@
             "enabled": false,
             "id": "{ccc4f0f3-4436-47ce-9419-43d22d54a933}",
             "period": "daily",
-            "time": "06:30",
+            "time": "07:01",
             "uri": "http://st01.dlf.de/dlf/01/104/ogg/stream.ogg",
             "volume": 25
         }
     ],
     "InternetRadio": [
+        {
+            "id": "{0a2152ef-da4f-4f26-8a77-078193da536e}",
+            "name": "BBC Radio 4",
+            "uri": "http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-eieuk"
+        },
         {
             "id": "{09be8e85-a9d3-4db8-b2c5-02e3eb3ff66d}",
             "name": "Deutschlandfunk",
@@ -109,9 +114,10 @@
         "locationID": "2928751"
     },
     "alarmTimeout": 30,
-    "brightnessActive": 15,
-    "brightnessStandby": 4,
+    "brightnessActive": 79,
+    "brightnessStandby": 5,
+    "sleepTimeout": 40,
     "version": "0.7.1",
-    "volume": 20,
+    "volume": 12,
     "wpa_ctrl": "/var/run/wpa_supplicant/wlan0"
 }
