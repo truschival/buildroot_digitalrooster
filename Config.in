@@ -17,4 +17,5 @@ endchoice
 source "$BR2_EXTERNAL_DigitalRooster_PATH/package/digitalroostergui/Config.in"
 source "$BR2_EXTERNAL_DigitalRooster_PATH/package/fbcp/Config.in"
 source "$BR2_EXTERNAL_DigitalRooster_PATH/package/qttestgadget/Config.in"
+source "$BR2_EXTERNAL_DigitalRooster_PATH/package/pistache/Config.in"
 #-------------------------------------------------------------------------------

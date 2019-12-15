@@ -84,12 +84,19 @@
 	gpio_keys {
 		compatible = "gpio-keys";
 		pinctrl-names = "default";
-		status = "ok";
-		rotary_pb {
-			label = "rotary_pb";
+
+		sw4 {
+			label = "power";
 			linux,code = <BTN_0>;
-			gpios = <&pio 0 3 GPIO_ACTIVE_LOW>;
+			gpios = <&r_pio 0 3 GPIO_ACTIVE_LOW>;
 		};
+
+		OnOff {
+			label = "OnOff";
+			linux,code = <102>; /* KEY_HOME */
+			/* PA3 */ 
+			gpios = <&pio 0 3  GPIO_ACTIVE_LOW>; 
+		};	
 	};
 
 	reg_sy8113b: gpio-regulator {
@@ -129,6 +136,7 @@
 		rotary-encoder,steps = <32>;
 		rotary-encoder,steps-per-period = <1>;
 	};
+
 };
 
 &mmc0 {
@@ -163,6 +171,11 @@
 	};
 };
 
+
+&ehci0 {
+	status = "okay";
+};
+
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_pa_pins>;
@@ -177,75 +190,53 @@
 
 /* PA0, PA1 (rotary A,B), PA3 (push button) for rotary encoder*/
 &pio {
-	/* Push button is configured via gpio-keys */
-	/* push_button: pb@0 { */
-	/* 	status = "ok"; */
-	/* 	label = "push_button"; */
-	/* 	allwinner,pins = "PA3"; */
-	/* 	allwinner,function = "gpio_in"; */
-	/* 	allwinner,pull = <0>; */
-	/* 	gpio-line-names = "push_button"; */
-	/* }; */
+	push_button {
+		status = "ok";
+		label = "push_button";
+		allwinner,pins = "PA3";
+		allwinner,function = "gpio_in";
+		line-name = "push_button";
+	};
 
 	rotary_pins: rotary_pins@0 {
 		allwinner,pins  = "PA0", "PA1";
 		allwinner,function = "gpio_in";
 		allwinner,pull = <0>;
-		gpio-line-names = "rot_a", "rot_b";
 	};
 };
 
 
 /* PiTFT GPIO pins */
-&pio {	
-	gpio-line-names = "x1", "x2", "x3", "x4";
-
-
+&pio {
 	/* IRQ pin (PC4, Pin18 + PA15, Pin16) + DC pin (PA2, Pin22)*/
         pitft_pins: pitft_pins {
 		label = "pitft";
-		allwinner,pins  = "PC4", "PA15", "PA2" , "PC7" ;
-		allwinner,function = "gpio_in", "gpio_in", "gpio_out", "gpio_out";
+		allwinner,pins  = "PC4", "PA15", "PA2";
+		allwinner,function = "gpio_in", "gpio_in", "gpio_out";
 		/* pullup none */
 		allwinner,pull =  <
 		2 /*PC4 pull-up */
-		2 /*PA15 pull-up Touch IRQ*/
+		2 /*PA15 pull-up*/
 		0 /*PA2  none */ >;
-		gpio-line-names = "ft-touch", "rt-int", "tft-DC", "tft-rst";
         };
+
 };
 /* Display @ SPI0 */
 &spi0 {
 	status = "okay";
-
-        /* pitft: pitft@0{ */
-		/*         compatible = "ilitek,ili934"; */
-		/*         reg = <0>; */
-		/*         pinctrl-names = "default"; */
-		/*         pinctrl-0 = <&pitft_pins>; */
-		/*         spi-max-frequency = <32000000>; */
-		/*         rotate = <270>; */
-		/*         fps = <25>; */
-		/*         bgr; */
-		/*         buswidth = <8>; */
-		/*         dc-gpios = <&pio 0 2 GPIO_ACTIVE_HIGH>; /\* PA2 active high *\/ */
-		/*         debug = <1>; */
-        /* }; */
-
-	/* Display for TinyDRM */
-	display@0{
-		compatible = "adafruit,yx240qv29", "ilitek,ili9341";
-		reg = <0>;
-		spi-max-frequency = <32000000>;
-                dc-gpios = <&pio 0 2 GPIO_ACTIVE_HIGH>; /* PA2 active high */
-		reset-gpios = <&pio 2 7  GPIO_ACTIVE_HIGH>;
-		rotation = <270>;
-		/* backlight = <&backlight>; */
+        pitft: pitft@0{
+                compatible = "ilitek,ili9340";
+                reg = <0>;
                 pinctrl-names = "default";
                 pinctrl-0 = <&pitft_pins>;
-
-	};
-
+                spi-max-frequency = <32000000>;
+                rotate = <270>;
+                fps = <25>;
+                bgr;
+                buswidth = <8>;
+                dc-gpios = <&pio 0 2 GPIO_ACTIVE_HIGH>; /* PA2 active high */
+                debug = <1>;
+        };
 };
 
 /* I2C Touch controller */
@@ -269,14 +260,15 @@
                 compatible = "maxim,max7315";
                 reg = <0x21>;
                 gpio-controller;
-		gpio-line-names = "red","green","blue","bl_pwm";
+		gpio-line-names = "red","green","blue","bl_pwm",
+		"nc","nc","nc","nc";
         };
 
 	ds1338: rtc@68 {
-		compatible = "dallas,ds1388";
+		compatible = "ti,bq32000";
 		reg = <0x68>;
-		trickle-resistor-ohms = <250>;
+		trickle-resistor-ohms = <1120>;
 		/* trickle-diode-disable; */
 	};
-
+	
 };
