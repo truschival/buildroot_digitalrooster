@@ -27,7 +27,7 @@ prompt "Package Version"
 config BR2_PACKAGE_DIGITALROOSTERGUI_VERSION_STABLE
 	bool "master"
 	help
-	Integrated Stable version
+	"latest stable version"
 
 config BR2_PACKAGE_DIGITALROOSTERGUI_VERSION_DEVEL
 	bool "develop"

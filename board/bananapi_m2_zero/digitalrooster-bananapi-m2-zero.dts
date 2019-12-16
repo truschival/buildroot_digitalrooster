@@ -94,9 +94,9 @@
 		OnOff {
 			label = "OnOff";
 			linux,code = <102>; /* KEY_HOME */
-			/* PA3 */ 
-			gpios = <&pio 0 3  GPIO_ACTIVE_LOW>; 
-		};	
+			/* PA3 */
+			gpios = <&pio 0 3  GPIO_ACTIVE_LOW>;
+		};
 	};
 
 	reg_sy8113b: gpio-regulator {
@@ -137,6 +137,18 @@
 		rotary-encoder,steps-per-period = <1>;
 	};
 
+	/* MAX98357A Codec compatible with TI PCM5102a */
+	MAX98357A-codec {
+ 		#sound-dai-cells = <0>;
+ 		compatible = "maxim,max98357a";
+ 		status = "okay";
+	};
+
+	sound {
+		compatible = "hifiberry,hifiberry-dac";
+		i2s-controller = <&i2s0>;
+		status = "okay";
+	};
 };
 
 &mmc0 {
@@ -171,6 +183,14 @@
 	};
 };
 
+/* enable i2s controller */
+&i2s0 {
+	status = "okay";
+};
+/* disable on-chip RTC */
+&rtc {
+	status = "disabled";
+};
 
 &ehci0 {
 	status = "okay";
@@ -221,21 +241,23 @@
         };
 
 };
+
 /* Display @ SPI0 */
 &spi0 {
 	status = "okay";
         pitft: pitft@0{
-                compatible = "ilitek,ili9340";
+		compatible ="adafruit,yx240qv29", "ilitek,ili9341";
                 reg = <0>;
                 pinctrl-names = "default";
                 pinctrl-0 = <&pitft_pins>;
                 spi-max-frequency = <32000000>;
-                rotate = <270>;
+                rotation = <90>;
                 fps = <25>;
                 bgr;
                 buswidth = <8>;
                 dc-gpios = <&pio 0 2 GPIO_ACTIVE_HIGH>; /* PA2 active high */
                 debug = <1>;
+		status = "okay";
         };
 };
 
@@ -264,11 +286,11 @@
 		"nc","nc","nc","nc";
         };
 
-	ds1338: rtc@68 {
+	bq32k: rtc@68 {
 		compatible = "ti,bq32000";
 		reg = <0x68>;
 		trickle-resistor-ohms = <1120>;
 		/* trickle-diode-disable; */
 	};
-	
+
 };
