@@ -152,7 +152,7 @@
 		simple-audio-card,format = "i2s";
 		/* simple-audio-card,bitclock-master = <&dai>; */
 		/* simple-audio-card,frame-master = <&dai_cpu>; */
-		simple-audio-card,mclk-fs  = <512>;
+		simple-audio-card,mclk-fs  = <256>;
 		status = "okay";
 
 		dai_cpu: simple-audio-card,cpu {
@@ -200,7 +200,8 @@
 /* enable i2s controller */
 &i2s0 {
 	status = "okay";
-	//pinctrl-0 = <&i2s0_mclk_pin>, <&i2s0_data_pins>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2s0_pins>;
 };
 /* disable on-chip RTC */
 &rtc {
@@ -223,8 +224,8 @@
 	status = "okay";
 };
 
-/* PA0, PA1 (rotary A,B), PA3 (push button) for rotary encoder*/
 &pio {
+	/* PA0, PA1 (rotary A,B), PA3 (push button) for rotary encoder*/
 	push_button {
 		status = "ok";
 		label = "push_button";
@@ -233,10 +234,20 @@
 		line-name = "push_button";
 	};
 
-	rotary_pins: rotary_pins@0 {
+	rotary_pins: rotary_pins {
 		allwinner,pins  = "PA0", "PA1";
 		allwinner,function = "gpio_in";
 		allwinner,pull = <0>;
+	};
+
+	i2s0_pins:  i2s0-pins {
+		pins =
+		"PA18",  /*I2S_LRCLK */
+		"PA19",  /*I2S_BCLCK */
+		"PA20";  /*I2S_DOUT  */
+		/* "PA21" not used - we don't have audio input */
+		allwinner,function = "i2s0";
+
 	};
 };
 
