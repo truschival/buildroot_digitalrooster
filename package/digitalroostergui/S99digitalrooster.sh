@@ -19,10 +19,13 @@ test -x "$DAEMON" || exit 0
 NAME="DigitalRoosterGUI"
 DESC="Alarm clock GUI"
 PID=/var/run/digitalrooster.pid
+PID_APLAY=/var/run/aplay.pid
 
 start() {
     printf "Starting $NAME: "
 
+    start-stop-daemon -S -v -b -m -p $PID_APLAY \
+                      -x  aplay -- -f S8 /dev/zero
     start-stop-daemon -S -v -b -m -p $PID \
                       -x  $DAEMON -- $DAEMON_ARGS
 
@@ -30,8 +33,11 @@ start() {
 }
 
 stop() {
+    printf "Stopping aplay: "
+    start-stop-daemon -K -q -p $PID_APLAY
+    [ $? = 0 ] && echo "OK" || echo "FAIL"
     printf "Stopping $NAME: "
-    start-stop-daemon -K -q -p $PID -- $DAEMON_ARGS 
+    start-stop-daemon -K -q -p $PID 
     [ $? = 0 ] && echo "OK" || echo "FAIL"
 }
 restart() {
@@ -40,18 +46,20 @@ restart() {
 }
 
 case "$1" in
-	start)
+        start)
         start
         ;;
-	stop)
+        stop)
         stop
         ;;
-	restart|reload)
+        restart|reload)
         restart
         ;;
-	*)
+        *)
         echo "Usage: $0 {start|stop|restart}"
         exit 1
 esac
 
 exit $?
+
+
