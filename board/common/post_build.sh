@@ -35,7 +35,7 @@ function update_fstab() {
     
     mkdir -p "${TARGET_DIR}/boot"
         
-	grep -q "${FSTAB_PERSISTENT_GUARD} " ${FSTAB_PATH}
+	grep -q "${FSTAB_PERSISTENT_GUARD}" ${FSTAB_PATH}
 	if [ $? -eq 1 ];
 	then
 	    echo ${FSTAB_PERSISTENT_GUARD} >> ${FSTAB_PATH}
