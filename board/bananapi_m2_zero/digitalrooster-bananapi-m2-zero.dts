@@ -311,7 +311,7 @@
 	ioexp: max7315@21 {
                 #gpio-cells = <2>;
                 compatible = "maxim,max7315";
-                reg = <0x21>; /* address determined by solder jumpers */
+                reg = <0x39>; /* address determined by solder jumpers */
                 gpio-controller;
 		gpio-line-names =
 			"red","green","blue","bl_pwm",
