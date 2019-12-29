@@ -92,7 +92,7 @@
 			linux,code = <BTN_0>;
 			gpios = <&r_pio 0 3 GPIO_ACTIVE_LOW>;
 		};
-
+		/* rotary push button event interface */
 		OnOff {
 			label = "OnOff";
 			linux,code = <102>; /* KEY_HOME */
@@ -233,13 +233,13 @@
 		allwinner,function = "gpio_in";
 		line-name = "push_button";
 	};
-
 	rotary_pins: rotary_pins {
 		allwinner,pins  = "PA0", "PA1";
 		allwinner,function = "gpio_in";
 		allwinner,pull = <0>;
 	};
 
+	/* I2S interface for codec */
 	i2s0_pins:  i2s0-pins {
 		pins =
 		"PA18",  /*I2S_LRCLK */
@@ -249,13 +249,10 @@
 		allwinner,function = "i2s0";
 
 	};
-};
 
-
-/* PiTFT GPIO pins */
-&pio {
-	/* IRQ pin (PC4, Pin18 + PA15, Pin16) + DC pin (PA2, Pin22)*/
+	/* PiTFT GPIO pins */
         pitft_pins: pitft_pins {
+		/* IRQ pin (PC4, Pin18 + PA15, Pin16) + DC pin (PA2, Pin22)*/
 		label = "pitft";
 		allwinner,pins  = "PC4", "PA15", "PA2";
 		allwinner,function = "gpio_in", "gpio_in", "gpio_out";
@@ -265,31 +262,38 @@
 		2 /*PA15 pull-up*/
 		0 /*PA2  none */ >;
         };
-
 };
 
 /* Display @ SPI0 */
 &spi0 {
 	status = "okay";
+
+	/* TINY DRM on Adafruit 2.8" TFT */
         pitft: pitft@0{
 		compatible ="adafruit,yx240qv29", "ilitek,ili9341";
-                reg = <0>;
-                pinctrl-names = "default";
-                pinctrl-0 = <&pitft_pins>;
-                spi-max-frequency = <32000000>;
-                rotation = <90>;
-                fps = <25>;
-                bgr;
-                buswidth = <8>;
-                dc-gpios = <&pio 0 2 GPIO_ACTIVE_HIGH>; /* PA2 active high */
-                debug = <1>;
 		status = "okay";
+		/* common for tinydrm and framebuffer */
+                reg = <0>;
+                spi-max-frequency = <32000000>;
+	        rotation = <90>; /* Rotation for tinydrm driver */
+		/* backlight = <&pwm_18_backlight>     /* backlight tinydrm driver */
+                /* GPIO assignments for tinydrm driver */
+                dc-gpios = <&pio 0 2 GPIO_ACTIVE_HIGH>;     /* PA2,   */
+                reset-gpios = <&pio 2 7  GPIO_ACTIVE_HIGH>; /* PC7, line 71 */
+                /* Properties of Framebuffer driver */
+		/* rotate = <270>; */
+		/* fps = <25>; */
+		/* bgr; */
+		/* buswidth = <8>; */
+		/* debug = <1>; */
+		/* pinctrl-0 = <&pitft_pins>; */
         };
 };
 
-/* I2C Touch controller */
 &i2c0 {
 	status = "okay";
+
+	/* I2C Touch controller */
 	ft6236: ft6236@38 {
                 compatible = "focaltech,ft6236";
                 reg = <0x38>;
@@ -303,20 +307,22 @@
                 touchscreen-size-y = <320>;
         };
 
+	/* IO-Expander - MAX7315AUE uses driver PCA953x */
 	ioexp: max7315@21 {
                 #gpio-cells = <2>;
                 compatible = "maxim,max7315";
-                reg = <0x21>;
+                reg = <0x21>; /* address determined by solder jumpers */
                 gpio-controller;
-		gpio-line-names = "red","green","blue","bl_pwm",
-		"nc","nc","nc","nc";
+		gpio-line-names =
+			"red","green","blue","bl_pwm",
+			"nc","nc","nc","nc";
         };
 
+	/* Real time clock */
 	bq32k: rtc@68 {
 		compatible = "ti,bq32000";
 		reg = <0x68>;
 		trickle-resistor-ohms = <1120>;
 		/* trickle-diode-disable; */
 	};
-
 };
