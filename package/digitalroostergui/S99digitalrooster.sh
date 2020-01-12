@@ -24,8 +24,6 @@ PID_APLAY=/var/run/aplay.pid
 start() {
     printf "Starting $NAME: "
 
-    start-stop-daemon -S -v -b -m -p $PID_APLAY \
-                      -x  aplay -- -f S8 /dev/zero
     start-stop-daemon -S -v -b -m -p $PID \
                       -x  $DAEMON -- $DAEMON_ARGS
 
