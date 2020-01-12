@@ -144,6 +144,9 @@
  		#sound-dai-cells = <0>;
  		compatible = "maxim,max98357a";
  		status = "okay";
+		pinctrl-0 = <&shutdown_n>;
+		sdmode-gpios = <&pio 0 7 GPIO_ACTIVE_HIGH>; /* PA7 Shutdown_n */
+		sdmode-delay = <5>; /* deassert shutdown after 5ms */
 	};
 
 	sound {
@@ -203,6 +206,7 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&i2s0_pins>;
 };
+
 /* disable on-chip RTC */
 &rtc {
 	status = "disabled";
@@ -225,18 +229,26 @@
 };
 
 &pio {
+	gpio-line-names =
+	"ROT_A", "ROT_B", "TFT_DC", "ROT_PB", /* PA0 - PA3 */
+	"", "","","SD_n";                     /* PA4 - PA7 */
+
+	shutdown_n: shutdown_n {
+		status = "ok";
+		label = "shutdown_n";
+		pins = "PA7";
+		function = "gpio_out";
+	};
+
 	/* PA0, PA1 (rotary A,B), PA3 (push button) for rotary encoder*/
 	push_button {
 		status = "ok";
-		label = "push_button";
-		allwinner,pins = "PA3";
-		allwinner,function = "gpio_in";
-		line-name = "push_button";
+		pins = "PA3";
+		function = "gpio_in";
 	};
 	rotary_pins: rotary_pins {
-		allwinner,pins  = "PA0", "PA1";
-		allwinner,function = "gpio_in";
-		allwinner,pull = <0>;
+		pins  = "PA0", "PA1";
+		function = "gpio_in";
 	};
 
 	/* I2S interface for codec */
@@ -246,8 +258,7 @@
 		"PA19",  /*I2S_BCLCK */
 		"PA20";  /*I2S_DOUT  */
 		/* "PA21" not used - we don't have audio input */
-		allwinner,function = "i2s0";
-
+		function = "i2s0";
 	};
 
 	/* PiTFT GPIO pins */
@@ -256,7 +267,6 @@
 		label = "pitft";
 		allwinner,pins  = "PC4", "PA15", "PA2";
 		allwinner,function = "gpio_in", "gpio_in", "gpio_out";
-		/* pullup none */
 		allwinner,pull =  <
 		2 /*PC4 pull-up */
 		2 /*PA15 pull-up*/
@@ -308,15 +318,15 @@
         };
 
 	/* IO-Expander - MAX7315AUE uses driver PCA953x */
-	ioexp: max7315@21 {
-                #gpio-cells = <2>;
-                compatible = "maxim,max7315";
-                reg = <0x39>; /* address determined by solder jumpers */
-                gpio-controller;
-		gpio-line-names =
-			"red","green","blue","bl_pwm",
-			"nc","nc","nc","nc";
-        };
+	/* ioexp: max7315@21 { */
+        /*         #gpio-cells = <2>; */
+        /*         compatible = "maxim,max7315"; */
+        /*         reg = <0x38>; /\* address determined by solder jumpers *\/ */
+        /*         gpio-controller; */
+ 	/* 	gpio-line-names = */
+	/* 		"red", "green", "blue", "bl_pwm", */
+	/* 		"nc","nc","nc","nc"; */
+        /* }; */
 
 	/* Real time clock */
 	bq32k: rtc@68 {
