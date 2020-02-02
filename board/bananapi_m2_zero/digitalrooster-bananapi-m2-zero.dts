@@ -58,8 +58,9 @@
 #include <dt-bindings/input/input.h>
 
 / {
-	model = "DigitalRooster @ BananaPi-M2-Zero";
-	compatible = "digitalrooster",
+	model = "BananaPi-M2-Zero:DigitalRooster-Mk2A";
+	version= "2.0"; 
+	compatible = "digitalrooster,2.0",
 		     "sinovoip,bpi-m2-zero",
 		     "allwinner,sun8i-h2-plus";
 
