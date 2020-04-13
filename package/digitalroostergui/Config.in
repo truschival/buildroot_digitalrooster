@@ -37,8 +37,16 @@ config BR2_PACKAGE_DIGITALROOSTERGUI_VERSION_DEVEL
 endchoice
 
 config BR2_PACKAGE_DIGITALROOSTERGUI_TEST
-	bool
-	prompt "Build and install unit tests on target"
+	bool "Build and install unit tests on target"
+
+config BR2_PACKAGE_DIGITALROOSTERGUI_REST
+	bool "Enable REST API"
+	depends on BR2_PACKAGE_PISTACHE
+
+config BR2_PACKAGE_DIGITALROOSTERGUI_REST_PORT
+	int "REST API TCP port"
+	default 6666
+	depends on BR2_PACKAGE_DIGITALROOSTERGUI_REST
 
 config BR2_PACKAGE_DIGITALROOSTERGUI_DEBUG
 	bool
