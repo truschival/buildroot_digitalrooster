@@ -9,8 +9,8 @@ sha256 8691f7beb051add7d5fca4a22b8a132e210b622e045d548ba6f257520588d46d  v0.8.ta
 # 0.9 Forecasts
 sha256 f9dfa5f1c56b97ad4af93f22769fe21b478602c083e14f52451045c89b530ae2  v0.9.tar.gz
 
-# 0.10.1 REST server
-sha256 8de57969c2586206c698618e5b93c851d08f101deca576e83285c56fcc713d8b  v0.10.1.tar.gz
+# 0.10.2 REST server
+sha256 7ad1bcde81526ad1acec44d8f35a1a92d2a9babec44453a95bfb00c29504f568  v0.10.2.tar.gz
 
 # development head
 none   none	digitalroostergui-develop.tar.gz
