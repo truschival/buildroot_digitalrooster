@@ -3,6 +3,8 @@
 set -u
 set -e
 set -x
+BOARD_DIR="$(dirname $0)"
+BOARD_NAME="$(basename ${BOARD_DIR})"
 
 # Add a console on tty1
 if [ -e ${TARGET_DIR}/etc/inittab ]; then
@@ -11,9 +13,12 @@ if [ -e ${TARGET_DIR}/etc/inittab ]; then
 tty1::respawn:/sbin/getty -L  tty1 0 vt100 # HDMI console' ${TARGET_DIR}/etc/inittab
 fi
 
-
 ##
 # Install firmware files
 ##
-cp -r ${BR2_EXTERNAL_DigitalRooster_PATH}/board/bananapi_m2_zero/firmware/* \
-   ${TARGET_DIR}/lib/firmware/
+cp -r ${BOARD_DIR}/firmware/* ${TARGET_DIR}/lib/firmware/
+
+##
+# Create a default uEnv.txt
+##
+cp -r ${BOARD_DIR}/uEnv.txt ${BINARIES_DIR}

@@ -1,0 +1,3 @@
+ACTIVE_ROOT=/dev/mmcblk0p2
+STANDBY_ROOT=/dev/mmcblk0p3
+
