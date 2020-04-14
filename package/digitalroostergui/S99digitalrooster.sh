@@ -12,7 +12,7 @@ export HOME=/root
 
 PATH="/sbin:/bin:/usr/sbin:/usr/bin"
 DAEMON="/usr/bin/DigitalRoosterGui"
-DAEMON_ARGS="--confpath=/persistent/digitalrooster.json --cachedir=/persistent/cache --logfile=/persistent/digitalrooster.log"
+DAEMON_ARGS="--config=/persistent/digitalrooster.json --cachedir=/persistent/cache --logfile=/persistent/digitalrooster.log"
 
 test -x "$DAEMON" || exit 0
 

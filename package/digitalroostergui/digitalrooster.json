@@ -1,123 +1,126 @@
 {
     "Alarms": [
         {
-            "enabled": false,
-            "id": "{8364287c-3036-4cd0-b243-0a4f5dd863ae}",
+            "enabled": true,
+            "id": "8364287c-3036-4cd0-b243-0a4f5dd863ae",
             "period": "workdays",
             "time": "06:30",
-            "uri": "http://st01.dlf.de/dlf/01/104/ogg/stream.ogg",
+            "url": "https://st01.sslstream.dlf.de/dlf/01/128/mp3/stream.mp3",
             "volume": 25
         },
         {
             "enabled": false,
-            "id": "{d7a094fb-86cc-48e7-9bf5-2ed537fd6048}",
-            "period": "weekend",
-            "time": "08:00",
-            "uri": "http://st01.dlf.de/dlf/01/104/ogg/stream.ogg",
-            "volume": 25
-        },
-        {
-            "enabled": false,
-            "id": "{ccc4f0f3-4436-47ce-9419-43d22d54a933}",
-            "period": "daily",
-            "time": "07:01",
-            "uri": "http://st01.dlf.de/dlf/01/104/ogg/stream.ogg",
-            "volume": 25
+            "id": "30df096e-f776-404c-8619-3c4c2c4da212",
+            "period": "once",
+            "time": "07:00",
+            "url": "http://st01.dlf.de/dlf/01/104/ogg/stream.ogg",
+            "volume": 40
         }
     ],
     "InternetRadio": [
         {
-            "id": "{0a2152ef-da4f-4f26-8a77-078193da536e}",
+            "id": "0a2152ef-da4f-4f26-8a77-078193da536e",
             "name": "BBC Radio 4",
-            "uri": "http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-eieuk"
+            "url": "http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-eieuk"
         },
         {
-            "id": "{09be8e85-a9d3-4db8-b2c5-02e3eb3ff66d}",
+            "id": "09be8e85-a9d3-4db8-b2c5-02e3eb3ff66d",
             "name": "Deutschlandfunk",
-            "uri": "http://st01.dlf.de/dlf/01/104/ogg/stream.ogg"
+            "url": "https://st01.sslstream.dlf.de/dlf/01/128/mp3/stream.mp3"
         },
         {
-            "id": "{51ec1a1b-bd15-4123-bab9-aa2ffaf9ff5c}",
+            "id": "51ec1a1b-bd15-4123-bab9-aa2ffaf9ff5c",
             "name": "Deutschlandfunk Nova",
-            "uri": "http://st03.dlf.de/dlf/03/104/ogg/stream.ogg"
+            "url": "https://st03.sslstream.dlf.de/dlf/03/128/mp3/stream.mp3"
         },
         {
-            "id": "{de2c79da-c250-4c78-a2db-5db398c0cbd9}",
+            "id": "de2c79da-c250-4c78-a2db-5db398c0cbd9",
             "name": "Radio FM4",
-            "uri": "https://fm4shoutcast.sf.apa.at"
+            "url": "https://fm4shoutcast.sf.apa.at"
         },
         {
-            "id": "{d742d526-e26f-4f56-89ad-57a188bc747c}",
+            "id": "d742d526-e26f-4f56-89ad-57a188bc747c",
             "name": "SWR Aktuell",
-            "uri": "http://swr-swraktuell-live.cast.addradio.de/swr/swraktuell/live/mp3/128/stream.mp3"
+            "url": "http://swr-swraktuell-live.cast.addradio.de/swr/swraktuell/live/mp3/128/stream.mp3"
         },
         {
-            "id": "{344c156c-5294-4742-94bd-7ece7f165043}",
+            "id": "344c156c-5294-4742-94bd-7ece7f165043",
             "name": "SWR2",
-            "uri": "http://swr-swr2-live.cast.addradio.de/swr/swr2/live/mp3/256/stream.mp3"
+            "url": "http://swr-swr2-live.cast.addradio.de/swr/swr2/live/mp3/256/stream.mp3"
         }
     ],
     "Podcasts": [
         {
-            "id": "{c3bf652a-d270-4e8c-9b57-6e6391625956}",
-            "name": "Ab 21 - Deutschlandfunk Nova",
-            "uri": "https://www.deutschlandfunknova.de/podcast/ab-21"
+            "id": "c3bf652a-d270-4e8c-9b57-6e6391625956",
+            "title": "Ab 21 - Deutschlandfunk Nova",
+            "updateInterval": 3600,
+            "url": "https://www.deutschlandfunknova.de/podcast/ab-21"
         },
         {
-            "id": "{61f6bcda-0334-49a7-bfe9-b206b9f0bef7}",
-            "name": "Alternativlos",
-            "uri": "https://alternativlos.org/alternativlos.rss"
+            "id": "61f6bcda-0334-49a7-bfe9-b206b9f0bef7",
+            "title": "Alternativlos",
+            "updateInterval": 3600,
+            "url": "https://alternativlos.org/alternativlos.rss"
         },
         {
-            "id": "{6d2ebae6-d961-411d-aecc-7820d1be1650}",
-            "name": "Arms Control Wonk",
-            "uri": "http://armscontrolwonk.libsyn.com/rss"
+            "id": "6d2ebae6-d961-411d-aecc-7820d1be1650",
+            "title": "Arms Control Wonk",
+            "updateInterval": 3600,
+            "url": "http://armscontrolwonk.libsyn.com/rss"
         },
         {
-            "id": "{b36899ea-5ca3-4929-afbe-005198f13e88}",
-            "name": "Deutschlandfunk - Der Tag - Deutschlandfunk",
-            "uri": "https://www.deutschlandfunk.de/podcast-deutschlandfunk-der-tag.3417.de.podcast.xml"
+            "id": "b36899ea-5ca3-4929-afbe-005198f13e88",
+            "title": "Deutschlandfunk - Der Tag - Deutschlandfunk",
+            "updateInterval": 3600,
+            "url": "https://www.deutschlandfunk.de/podcast-deutschlandfunk-der-tag.3417.de.podcast.xml"
         },
         {
-            "id": "{8bbc9a39-81df-4e99-9a19-a56cfb7d0b19}",
-            "name": "Eine Stunde Liebe - Deutschlandfunk Nova",
-            "uri": "https://www.deutschlandfunknova.de/podcast/eine-stunde-liebe"
+            "id": "8bbc9a39-81df-4e99-9a19-a56cfb7d0b19",
+            "title": "Eine Stunde Liebe - Deutschlandfunk Nova",
+            "updateInterval": 3600,
+            "url": "https://www.deutschlandfunknova.de/podcast/eine-stunde-liebe"
         },
         {
-            "id": "{285cf124-c4b9-4813-b6bb-e17517e4dd48}",
-            "name": "Eine Stunde Was mit Medien - Deutschlandfunk Nova",
-            "uri": "https://www.deutschlandfunknova.de/podcast/eine-stunde-medien"
+            "id": "285cf124-c4b9-4813-b6bb-e17517e4dd48",
+            "title": "Eine Stunde Was mit Medien - Deutschlandfunk Nova",
+            "updateInterval": 3600,
+            "url": "https://www.deutschlandfunknova.de/podcast/eine-stunde-medien"
         },
         {
-            "id": "{0a86a6ab-a174-4ccd-b8a5-4f375b5dbac8}",
-            "name": "Hielscher oder Haase - Deutschlandfunk Nova",
-            "uri": "https://www.deutschlandfunknova.de/podcast/hielscher-oder-haase"
+            "id": "0a86a6ab-a174-4ccd-b8a5-4f375b5dbac8",
+            "title": "Hielscher oder Haase - Deutschlandfunk Nova",
+            "updateInterval": 3600,
+            "url": "https://www.deutschlandfunknova.de/podcast/hielscher-oder-haase"
         },
         {
-            "id": "{cdb47dd0-fea1-47d5-896a-d766b8b4a111}",
-            "name": "More or Less: Behind the Stats",
-            "uri": "https://podcasts.files.bbci.co.uk/p02nrss1.rss"
+            "id": "cdb47dd0-fea1-47d5-896a-d766b8b4a111",
+            "title": "More or Less: Behind the Stats",
+            "updateInterval": 3600,
+            "url": "https://podcasts.files.bbci.co.uk/p02nrss1.rss"
         },
         {
-            "id": "{532f29b8-8f8e-4790-96aa-53d8755ac091}",
-            "name": "My Dad Wrote A Porno",
-            "uri": "https://rss.acast.com/mydadwroteaporno"
+            "id": "532f29b8-8f8e-4790-96aa-53d8755ac091",
+            "title": "My Dad Wrote A Porno",
+            "updateInterval": 3600,
+            "url": "https://rss.acast.com/mydadwroteaporno"
         },
         {
-            "id": "{e5383b65-7e82-49e4-bda0-02e41e29af6b}",
-            "name": "Witness History",
-            "uri": "https://podcasts.files.bbci.co.uk/p004t1hd.rss"
+            "id": "e5383b65-7e82-49e4-bda0-02e41e29af6b",
+            "title": "Witness History",
+            "updateInterval": 3600,
+            "url": "https://podcasts.files.bbci.co.uk/p004t1hd.rss"
         }
     ],
     "Weather": {
-        "API-Key": "a904431b4e0eae431bcc1e075c761abb",
-        "locationID": "2928751"
+        "apiKey": "a904431b4e0eae431bcc1e075c761abb",
+        "locationId": "2928751",
+        "updateInterval": 3600
     },
     "alarmTimeout": 30,
-    "brightnessActive": 79,
-    "brightnessStandby": 5,
+    "brightnessActive": 17,
+    "brightnessStandby": 1,
     "sleepTimeout": 40,
-    "version": "0.7.1",
-    "volume": 12,
+    "version": "0.10.1",
+    "volume": 24,
     "wpa_ctrl": "/var/run/wpa_supplicant/wlan0"
 }
