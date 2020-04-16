@@ -58,9 +58,9 @@
 #include <dt-bindings/input/input.h>
 
 / {
-	model = "BananaPi-M2-Zero:DigitalRooster-Mk2A";
-	version= "2.0"; 
-	compatible = "digitalrooster,2.0",
+	model = "BananaPi-M2-Zero:DigitalRooster-Mk3A";
+	version= "2.0";
+	compatible = "digitalrooster,3.0",
 		     "sinovoip,bpi-m2-zero",
 		     "allwinner,sun8i-h2-plus";
 
@@ -93,13 +93,15 @@
 			linux,code = <BTN_0>;
 			gpios = <&r_pio 0 3 GPIO_ACTIVE_LOW>;
 		};
+
 		/* rotary push button event interface */
 		OnOff {
 			label = "OnOff";
-			linux,code = <102>; /* KEY_HOME */
-			/* PA3 */
-			gpios = <&pio 0 3  GPIO_ACTIVE_LOW>;
+			linux,code = <KEY_HOME>;
+			/* PA7 Pin 29 OK */
+			gpios = <&pio 0 7  GPIO_ACTIVE_LOW>;
 		};
+
 	};
 
 	reg_sy8113b: gpio-regulator {
@@ -131,8 +133,8 @@
 		status = "okay";
 		pinctrl-names = "default";
 		pinctrl-0 = <&rotary_pins>;
-		gpios = <&pio 0 0 GPIO_ACTIVE_HIGH>, /* PA0 */
-			<&pio 0 1 GPIO_ACTIVE_HIGH>; /* PA1 */
+		gpios = <&pio 0 8  GPIO_ACTIVE_HIGH>, /* PA8 */
+			<&pio 0 21 GPIO_ACTIVE_HIGH>; /* PA21 */
 		linux,axis = <0>;
 		rotary-encoder,relative-axis;
 		rotary-encoder,encoding = "gray";
@@ -146,7 +148,7 @@
  		compatible = "maxim,max98357a";
  		status = "okay";
 		pinctrl-0 = <&shutdown_n>;
-		sdmode-gpios = <&pio 0 7 GPIO_ACTIVE_HIGH>; /* PA7 Shutdown_n */
+		sdmode-gpios = <&pio 0 17 GPIO_ACTIVE_HIGH>; /* PA17 SD_n */
 		sdmode-delay = <5>; /* deassert shutdown after 5ms */
 	};
 
@@ -229,26 +231,42 @@
 	status = "okay";
 };
 
+
+&r_pio{
+	/* Touch Controller Interrupt line */
+	TouchInt {
+		status = "ok";
+		pins = "PL4";
+		function = "gpio_in";	
+	};
+};
+
 &pio {
 	gpio-line-names =
-	"ROT_A", "ROT_B", "TFT_DC", "ROT_PB", /* PA0 - PA3 */
-	"", "","","SD_n";                     /* PA4 - PA7 */
-
+	"", "", "TFT_DC", "",                   /* PA0 - PA3 */
+	"", "", "", "ROT_PB",                   /* PA4 - PA7 */
+	"ROT_B", "","","",                      /* PA8 - PA11 */
+	"", "","","TFT_INT",                    /* PA12 - PA15 */
+	"", "SD_n","I2S_LRCLK","I2S_BCLCK",     /* PA16 - PA19 */
+	"I2S_DOUT", "ROT_A","","";              /* PA20 - PA23 */
+	
 	shutdown_n: shutdown_n {
 		status = "ok";
 		label = "shutdown_n";
-		pins = "PA7";
+		pins = "PA17";
 		function = "gpio_out";
 	};
 
-	/* PA0, PA1 (rotary A,B), PA3 (push button) for rotary encoder*/
+	/* PA7 (push button) of rotary encoder*/
 	push_button {
 		status = "ok";
-		pins = "PA3";
+		pins = "PA7";
 		function = "gpio_in";
 	};
+	
+	/* Rotary encoder pins A and B */
 	rotary_pins: rotary_pins {
-		pins  = "PA0", "PA1";
+		pins = "PA8", "PA21";
 		function = "gpio_in";
 	};
 
@@ -264,14 +282,17 @@
 
 	/* PiTFT GPIO pins */
         pitft_pins: pitft_pins {
-		/* IRQ pin (PC4, Pin18 + PA15, Pin16) + DC pin (PA2, Pin22)*/
+		/* Touch IRQ Pin18 (PC4 has no IRQ) bridged to PL4 Pin36 */ 
+		/* DC pin PA2, Pin22  */
+		/* Reset line PC7 (Pin 26) */
 		label = "pitft";
-		allwinner,pins  = "PC4", "PA15", "PA2";
-		allwinner,function = "gpio_in", "gpio_in", "gpio_out";
+		pins  = "PC4", "PL4", "PC7" ,"PA2";
+		function = "gpio_in", "gpio_in", "gpio_out", "gpio_out";
 		allwinner,pull =  <
 		2 /*PC4 pull-up */
-		2 /*PA15 pull-up*/
-		0 /*PA2  none */ >;
+		2 /*PL4 pull-up */
+		0 /*PC7 none */
+		0 /*PA2 none */ >;
         };
 };
 
@@ -289,7 +310,7 @@
 	        rotation = <90>; /* Rotation for tinydrm driver */
 		/* backlight = <&pwm_18_backlight>     /* backlight tinydrm driver */
                 /* GPIO assignments for tinydrm driver */
-                dc-gpios = <&pio 0 2 GPIO_ACTIVE_HIGH>;     /* PA2,   */
+                dc-gpios = <&pio 0 2 GPIO_ACTIVE_HIGH>;     /* PA2   */
                 reset-gpios = <&pio 2 7  GPIO_ACTIVE_HIGH>; /* PC7, line 71 */
                 /* Properties of Framebuffer driver */
 		/* rotate = <270>; */
@@ -308,26 +329,15 @@
 	ft6236: ft6236@38 {
                 compatible = "focaltech,ft6236";
                 reg = <0x38>;
-                interrupt-parent = <&pio>;
+                interrupt-parent = <&r_pio>;
 		/*
 		 * use PA15 as IRQ - PC4 (Pin18) doesn't have IRQ capability
-		 * --> Bridge Pin18 (PC4) to Pin16 (PA15) externally
+		 * --> Bridge Pin18 (PC4) to Pin36 (PL4) externally
 		 */
-                interrupts = <0 15 IRQ_TYPE_EDGE_FALLING>;
+                interrupts = <0 4 IRQ_TYPE_EDGE_FALLING>;
                 touchscreen-size-x = <240>;
                 touchscreen-size-y = <320>;
         };
-
-	/* IO-Expander - MAX7315AUE uses driver PCA953x */
-	/* ioexp: max7315@21 { */
-        /*         #gpio-cells = <2>; */
-        /*         compatible = "maxim,max7315"; */
-        /*         reg = <0x38>; /\* address determined by solder jumpers *\/ */
-        /*         gpio-controller; */
- 	/* 	gpio-line-names = */
-	/* 		"red", "green", "blue", "bl_pwm", */
-	/* 		"nc","nc","nc","nc"; */
-        /* }; */
 
 	/* Real time clock */
 	bq32k: rtc@68 {
