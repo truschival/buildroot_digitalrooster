@@ -237,24 +237,31 @@
 	TouchInt {
 		status = "ok";
 		pins = "PL4";
-		function = "gpio_in";	
+		function = "gpio_in";
 	};
 };
 
 &pio {
 	gpio-line-names =
 	"", "", "TFT_DC", "",                   /* PA0 - PA3 */
-	"", "", "", "ROT_PB",                   /* PA4 - PA7 */
+	"", "", "APDS_INT", "ROT_PB",           /* PA4 - PA7 */
 	"ROT_B", "","","",                      /* PA8 - PA11 */
 	"", "","","TFT_INT",                    /* PA12 - PA15 */
 	"", "SD_n","I2S_LRCLK","I2S_BCLCK",     /* PA16 - PA19 */
 	"I2S_DOUT", "ROT_A","","";              /* PA20 - PA23 */
-	
+
 	shutdown_n: shutdown_n {
 		status = "ok";
 		label = "shutdown_n";
 		pins = "PA17";
 		function = "gpio_out";
+	};
+
+	/* PA6 APDS 9960 interrupt line*/
+	APDS_INT {
+		status = "ok";
+		pins = "PA6";
+		function = "gpio_in"; /*TODO: Check function if IRQ exists */
 	};
 
 	/* PA7 (push button) of rotary encoder*/
@@ -263,7 +270,7 @@
 		pins = "PA7";
 		function = "gpio_in";
 	};
-	
+
 	/* Rotary encoder pins A and B */
 	rotary_pins: rotary_pins {
 		pins = "PA8", "PA21";
@@ -282,7 +289,7 @@
 
 	/* PiTFT GPIO pins */
         pitft_pins: pitft_pins {
-		/* Touch IRQ Pin18 (PC4 has no IRQ) bridged to PL4 Pin36 */ 
+		/* Touch IRQ Pin18 (PC4 has no IRQ) bridged to PL4 Pin36 */
 		/* DC pin PA2, Pin22  */
 		/* Reset line PC7 (Pin 26) */
 		label = "pitft";
@@ -325,6 +332,15 @@
 &i2c0 {
 	status = "okay";
 
+	/* APDS 9960 light, color, proximity sensor */
+	apds9960: adps@39 {
+		compatible = "avago,apds9960";
+		reg = <0x39>;
+		interrupt-parent = <&pio>;
+		/* PA6 INT6 edge l->h triggered */
+		interrupts = <0 6 IRQ_TYPE_EDGE_RISING>;
+	};
+
 	/* I2C Touch controller */
 	ft6236: ft6236@38 {
                 compatible = "focaltech,ft6236";
@@ -346,4 +362,5 @@
 		trickle-resistor-ohms = <1120>;
 		/* trickle-diode-disable; */
 	};
+
 };
