@@ -3,23 +3,20 @@
 # Avoid excessive stat(/etc/localtime) calls
 export TZ=:/etc/localtime
 
+# QT/Framebuffer related settings
 source /etc/default/digitalrooster-qt.conf
-
-##
-# Config files in /root/.config
-##
-export HOME=/root
 
 PATH="/sbin:/bin:/usr/sbin:/usr/bin"
 DAEMON="/usr/bin/DigitalRoosterGui"
-DAEMON_ARGS="--config=/persistent/digitalrooster.json --cachedir=/persistent/cache --logfile=/persistent/digitalrooster.log"
+DAEMON_ARGS="--config=/persistent/digitalrooster.json \
+	     --cachedir=/persistent/cache \
+             --logfile=/persistent/digitalrooster.log"
 
 test -x "$DAEMON" || exit 0
 
 NAME="DigitalRoosterGUI"
 DESC="Alarm clock GUI"
 PID=/var/run/digitalrooster.pid
-PID_APLAY=/var/run/aplay.pid
 
 start() {
     printf "Starting $NAME: "
@@ -31,9 +28,6 @@ start() {
 }
 
 stop() {
-    printf "Stopping aplay: "
-    start-stop-daemon -K -q -p $PID_APLAY
-    [ $? = 0 ] && echo "OK" || echo "FAIL"
     printf "Stopping $NAME: "
     start-stop-daemon -K -q -p $PID 
     [ $? = 0 ] && echo "OK" || echo "FAIL"

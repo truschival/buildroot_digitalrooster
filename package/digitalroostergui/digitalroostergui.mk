@@ -42,24 +42,31 @@ ifeq (y , $(BR2_PACKAGE_DIGITALROOSTERGUI_REST))
 		-DREST_API_PORT=$(BR2_PACKAGE_DIGITALROOSTERGUI_REST_PORT)
 endif
 
-# build and install Unittests to target
+# Build with tests, user must copy the binary and support files manually
 ifeq (y , $(BR2_PACKAGE_DIGITALROOSTERGUI_TEST))
-	DIGITALROOSTERGUI_CONF_OPTS += -DBUILD_TESTS=ON -DBUILD_SHARED_LIBS=OFF
+       DIGITALROOSTERGUI_CONF_OPTS += -DBUILD_TESTS=ON -DBUILD_SHARED_LIBS=OFF
+endif #tests
 
-#install unit tests to target
-define DIGITALROOSTERGUI_POST_INSTALL_UNIT_TEST_TO_TARGET
-#	$(INSTALL) -m 0755 $(DIGITALROOSTERGUI_BUILDDIR)/bin/DigitalRooster_gtest-$(DIGITALROOSTERGUI_VERSION)  ${TARGET_DIR}/usr/bin
-endef
-
-endif # install unit tests
+# Deploy custom config
+ifeq (y , $(BR2_PACKAGE_DIGITALROOSTERGUI_CUSTOM_CONFIG))
+	DIGITALROOSTERGUI_CONFIG_FILE = \
+		$(BR2_PACKAGE_DIGITALROOSTERGUI_CUSTOM_CONFIG_FILE)
+else
+	DIGITALROOSTERGUI_CONFIG_FILE = \
+		$(DIGITALROOSTERGUI_PKGDIR)/digitalrooster.json
+endif
 
 #install start script
 define DIGITALROOSTERGUI_POST_INSTALL_TARGET_SCRIPT
-	$(INSTALL) -m 0755 ${DIGITALROOSTERGUI_PKGDIR}/S99digitalrooster.sh  ${TARGET_DIR}/etc/init.d/
-	$(INSTALL) -D -m 0644 ${DIGITALROOSTERGUI_PKGDIR}/digitalrooster-qt.conf ${TARGET_DIR}/etc/default/digitalrooster-qt.conf
-	$(INSTALL) -m 0644 ${DIGITALROOSTERGUI_PKGDIR}/digitalrooster.json $(TARGET_DIR)/persistent
+	$(INSTALL) -m 0755 $(DIGITALROOSTERGUI_PKGDIR)/S99digitalrooster.sh \
+		$(TARGET_DIR)/etc/init.d/
+	$(INSTALL) -D -m 0644 $(DIGITALROOSTERGUI_PKGDIR)/digitalrooster-qt.conf \
+		$(TARGET_DIR)/etc/default/digitalrooster-qt.conf
+	$(INSTALL) -D -m 0644 $(DIGITALROOSTERGUI_CONFIG_FILE) \
+		$(TARGET_DIR)/persistent/digitalrooster.json
 endef
 
+# Register post install hooks
 DIGITALROOSTERGUI_POST_INSTALL_TARGET_HOOKS += \
 	DIGITALROOSTERGUI_POST_INSTALL_TARGET_SCRIPT \
 	DIGITALROOSTERGUI_POST_INSTALL_UNIT_TEST_TO_TARGET
