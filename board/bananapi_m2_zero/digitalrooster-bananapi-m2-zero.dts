@@ -154,7 +154,7 @@
 
 	sound {
 		compatible = "simple-audio-card";
-		simple-audio-card,name = "digitalrooster-audio";
+		simple-audio-card,name = "audio-mk3a";
 		simple-audio-card,format = "i2s";
 		/* simple-audio-card,bitclock-master = <&dai>; */
 		/* simple-audio-card,frame-master = <&dai_cpu>; */
