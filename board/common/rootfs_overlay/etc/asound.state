@@ -1,4 +1,4 @@
-state.audiomk3a {
+state.sndi2sdefault {
 	control.1 {
 		iface MIXER
 		name PCM
