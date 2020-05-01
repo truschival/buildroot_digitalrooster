@@ -1,16 +1,5 @@
-# 0.7.1 Wifi Control
-md5 dfb0a4210308bae0c55968a11862c6b7  v0.7.1.tar.gz
-sha256 1b7d053fd3cc6ca760dd378a235b91d8fdab496fff34140aa639f21dd7619ff1  v0.7.1.tar.gz
-
-# 0.8 Configuratble event paths
-md5 4a3162f7b1cebc611ba921ac1b5cca76  v0.8.tar.gz
-sha256 8691f7beb051add7d5fca4a22b8a132e210b622e045d548ba6f257520588d46d  v0.8.tar.gz
-
-# 0.9 Forecasts
-sha256 f9dfa5f1c56b97ad4af93f22769fe21b478602c083e14f52451045c89b530ae2  v0.9.tar.gz
-
-# 0.10.2 REST server
-sha256 7ad1bcde81526ad1acec44d8f35a1a92d2a9babec44453a95bfb00c29504f568  v0.10.2.tar.gz
+# locally computed
+sha256 7ad1bcde81526ad1acec44d8f35a1a92d2a9babec44453a95bfb00c29504f568  digitalroostergui-v0.10.2.tar.gz
 
 # development head
 none   none	digitalroostergui-develop.tar.gz

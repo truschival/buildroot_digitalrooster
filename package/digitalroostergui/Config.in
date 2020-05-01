@@ -17,36 +17,35 @@ config BR2_PACKAGE_DIGITALROOSTERGUI
 	select BR2_PACKAGE_DEJAVU_SERIF_CONDENSED
 	select BR2_PACKAGE_DEJAVU_MONO
 	help
-	Digital alarm clock and podcast / internet radio player
+	  Digital alarm clock and podcast / internet radio player
 
 if BR2_PACKAGE_DIGITALROOSTERGUI
 ### Version selection
 choice
-prompt "Package Version"
+	prompt "Package Version"
 
 config BR2_PACKAGE_DIGITALROOSTERGUI_VERSION_STABLE
 	bool "master"
 	help
-	"latest stable version"
+	  "latest stable version"
 
 config BR2_PACKAGE_DIGITALROOSTERGUI_VERSION_DEVEL
 	bool "develop"
 	help
-	"Latest development branch"
+	  "Latest development branch"
 
 endchoice
 
 # Other build configs
 config BR2_PACKAGE_DIGITALROOSTERGUI_CUSTOM_CONFIG
-       bool "use custom config file"
+	bool "use custom config file"
 
 config BR2_PACKAGE_DIGITALROOSTERGUI_CUSTOM_CONFIG_FILE
-       string
-       default "./digitalrooster.json"
-       prompt "path to custom config file"
-       depends on BR2_PACKAGE_DIGITALROOSTERGUI_CUSTOM_CONFIG
-       help
-         custom config file will be copied to /persistent/digitalrooster.json
+	string "path to custom config file"
+	default "./digitalrooster.json"
+	depends on BR2_PACKAGE_DIGITALROOSTERGUI_CUSTOM_CONFIG
+	help
+	  config file will be copied to /persistent/digitalrooster.json
 
 config BR2_PACKAGE_DIGITALROOSTERGUI_DEBUG
 	bool
