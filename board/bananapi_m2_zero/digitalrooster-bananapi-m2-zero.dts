@@ -348,28 +348,28 @@
 		/* red */
 		r@2 {
 			label = "RGB:r";
-			reg = <0x02>;
+			reg = <0x00>; /* mapped to i2c register 0x02 */
 		};
 		/* green */
 		g@3 {
 			label = "RGB:g";
-			reg = <0x03>;
+			reg = <0x01>;
 		};
 		/* blue */
 		b@4 {
 			label = "RGB:b";
-			reg = <0x04>;
+			reg = <0x02>;
 		};
 		/* amber */
 		a@5 {
 			label = "RGB:a";
-			reg = <0x05>;
+			reg = <0x03>;
 			/* linux,default-trigger = "activity"; */
 		};
 		/* backlight */
 		bl@6{
 			label = "bl";
-			reg = <0x06>;
+			reg = <0x04>;
 			/* linux,default-trigger = "backlight"; */
 		};
 	};
