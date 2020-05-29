@@ -178,10 +178,13 @@
 		interrupts = <4 IRQ_TYPE_EDGE_RISING>;
 	};
 
-	/* LED driver actually a TLC59208F but seems compatible */
+	/* LED driver actually a TLC59208F but tlc59108f driver is compatible */
 	tlc59208f: tlc59208f@48 {
 		compatible = "ti,tlc59108";
-		reg = <0x20>; /* should be 0x42 */
+		reg = <0x20>; /* i2c address should be 0x42 */
+		#address-cells = <1>;
+		#size-cells = <0>;
+
 		/* red */
 		r@2 {
 			label = "RGB:r";
