@@ -254,15 +254,15 @@
 	};
 
 	/* Grayhill Rotary encoder for volume */
-	rotary_abs: rotary_abs {
+	volume {
 		compatible = "rotary-encoder";
-		label = "rotary-enc";
+		name = "volume";
 		status = "okay";
 		pinctrl-names = "default";
 		pinctrl-0 = <&rotary_pins>;
 		gpios = <&gpio	6 GPIO_ACTIVE_HIGH>, /* Mk3 connector pin 31 */
 			<&gpio 20 GPIO_ACTIVE_HIGH>; /* Mk3 connector pin 38 */
-		linux,axis = <0>; /* REL_X */
+		linux,axis = <REL_X>; /* REL_X=0 */
 		rotary-encoder,encoding = "gray";
 		rotary-encoder,relative-axis;
 		rotary-encoder,steps = <32>; /* 24 default */
@@ -317,4 +317,18 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart1_gpio14>; /* pins = <14 15> */
 	status = "okay";
+};
+
+/* disable unneeded video outputs */
+&vec {
+	status = "disabled";
+};
+
+
+&dsi0 {
+	status = "disabled";
+};
+
+&dsi1 {
+	status = "disabled";
 };
