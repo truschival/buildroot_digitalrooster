@@ -15,3 +15,7 @@ disable_fw_kms_setup=1
 gpu_mem_256=128
 gpu_mem_512=128
 gpu_mem_1024=256
+
+# We don't use HDMI - put it in low power mode
+hdmi_blanking=1
+
