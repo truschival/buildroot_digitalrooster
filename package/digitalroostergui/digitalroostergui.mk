@@ -9,7 +9,7 @@ DIGITALROOSTERGUI_VERSION = develop
 DIGITALROOSTERGUI_SITE = https://github.com/truschival/DigitalRoosterGui.git
 DIGITALROOSTERGUI_SITE_METHOD = git
 else
-DIGITALROOSTERGUI_VERSION = v0.10.2
+DIGITALROOSTERGUI_VERSION = v0.11
 DIGITALROOSTERGUI_SITE = $(call github,truschival,DigitalRoosterGui,$(DIGITALROOSTERGUI_VERSION))
 endif
 
@@ -58,15 +58,30 @@ endif
 define DIGITALROOSTERGUI_POST_INSTALL_TARGET_SCRIPT
 	$(INSTALL) -m 0755 $(DIGITALROOSTERGUI_PKGDIR)/S99digitalrooster.sh \
 	$(TARGET_DIR)/etc/init.d/
-	$(INSTALL) -D -m 0644 $(DIGITALROOSTERGUI_PKGDIR)/digitalrooster-qt.conf \
-	$(TARGET_DIR)/etc/default/digitalrooster-qt.conf
+	$(INSTALL) -D -m 0644 $(DIGITALROOSTERGUI_PKGDIR)/digitalrooster.conf \
+	$(TARGET_DIR)/etc/default/digitalrooster.conf
 	$(INSTALL) -D -m 0644 $(DIGITALROOSTERGUI_CONFIG_FILE) \
 	$(TARGET_DIR)/persistent/digitalrooster.json
 endef
 
+# install crontab from monitor and processmonitor/restart script
+define DIGITALROOSTERGUI_POST_INSTALL_TARGET_SCRIPT_PROCMON
+	$(INSTALL) -D -m 0755 $(DIGITALROOSTERGUI_PKGDIR)/procmon.sh \
+	$(TARGET_DIR)/usr/bin/procmon.sh
+	$(INSTALL) -D -m 0644 $(DIGITALROOSTERGUI_PKGDIR)/check_digitalrooster \
+	$(TARGET_DIR)/etc/cron.d
+endef
+
+
 # Register post install hooks
 DIGITALROOSTERGUI_POST_INSTALL_TARGET_HOOKS += \
-	DIGITALROOSTERGUI_POST_INSTALL_TARGET_SCRIPT \
-	DIGITALROOSTERGUI_POST_INSTALL_UNIT_TEST_TO_TARGET
+	DIGITALROOSTERGUI_POST_INSTALL_TARGET_SCRIPT
+
+# Only install process monitor and crontab if crond is installed
+ifeq (y, $(BR2_PACKAGE_DCRON))
+DIGITALROOSTERGUI_POST_INSTALL_TARGET_HOOKS += \
+	DIGITALROOSTERGUI_POST_INSTALL_TARGET_SCRIPT_PROCMON
+endif
+
 
 $(eval $(cmake-package))

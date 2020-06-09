@@ -4,19 +4,17 @@
 export TZ=:/etc/localtime
 
 # QT/Framebuffer related settings
-source /etc/default/digitalrooster-qt.conf
+source /etc/default/digitalrooster.conf
 
 PATH="/sbin:/bin:/usr/sbin:/usr/bin"
-DAEMON="/usr/bin/DigitalRoosterGui"
-DAEMON_ARGS="--config=/persistent/digitalrooster.json \
-	     --cachedir=/persistent/cache \
-             --logfile=/persistent/digitalrooster.log"
-
-test -x "$DAEMON" || exit 0
+DAEMON=$DR_EXE
+DAEMON_ARGS="--config=$DATA_PART/digitalrooster.json \
+	     --cachedir=$DATA_PART/cache \
+             --logfile=$DR_LOG_FILE"
 
 NAME="DigitalRoosterGUI"
 DESC="Alarm clock GUI"
-PID=/var/run/digitalrooster.pid
+PID=$DR_PID_FILE
 
 start() {
     printf "Starting $NAME: "
