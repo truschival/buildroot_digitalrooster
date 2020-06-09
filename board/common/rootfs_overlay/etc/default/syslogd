@@ -1,0 +1,2 @@
+# Loglevel info
+SYSLOGD_ARGS="-l 7"
