@@ -13,17 +13,8 @@ tty1::respawn:/sbin/getty -L  tty1 0 vt100 # HDMI console' ${TARGET_DIR}/etc/ini
 fi
 
 
-
-
 ##
 # Install custom config.txt & cmdline.txt
 ##
 cp ${BOARD_DIR}/config.txt  ${BINARIES_DIR}/rpi-firmware/
 cp ${BOARD_DIR}/cmdline.txt ${BINARIES_DIR}/rpi-firmware/
-
-
-##
-# Add custom Device tree overlays to imges/rpi-firmware/overlays
-##
-cp -r ${BR2_EXTERNAL_DigitalRooster_PATH}/board/rpi0w/dt-overlays/* \
-   ${BINARIES_DIR}/rpi-firmware/overlays
