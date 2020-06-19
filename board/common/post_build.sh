@@ -31,8 +31,8 @@ function update_wpa_config() {
 function update_fstab() {
     local FSTAB_PATH=${TARGET_DIR}/etc/fstab
     local FSTAB_PERSISTENT_GUARD="# Added by common/post_build.sh"
-    local FSTAB_PERSISTENT_ENTRY="/dev/disk/by-label/persistent  /persistent     ext4    defaults        0       0"
     local FSTAB_BOOT_ENTRY="/dev/mmcblk0p1  /boot    vfat    defaults        0       0"
+    local FSTAB_PERSISTENT_ENTRY="/dev/mmcblk0p4  /persistent     ext4    defaults        0       0"
     
     mkdir -p "${TARGET_DIR}/boot"
     
@@ -40,8 +40,8 @@ function update_fstab() {
     if [ $? -eq 1 ];
     then
 	echo ${FSTAB_PERSISTENT_GUARD} >> ${FSTAB_PATH}
-	echo ${FSTAB_PERSISTENT_ENTRY} >> ${FSTAB_PATH}
 	echo ${FSTAB_BOOT_ENTRY} >> ${FSTAB_PATH}
+	echo ${FSTAB_PERSISTENT_ENTRY} >> ${FSTAB_PATH}
     else
 	echo "post_build.sh already modified ${FSTAB_PATH} - not changing!"
     fi
@@ -50,3 +50,13 @@ function update_fstab() {
 echo "Updating WPA Supplicant config LOCAL_WIFI_NET_CFG=${LOCAL_WIFI_NET_CFG}"
 update_wpa_config
 update_fstab
+
+##
+# If a local environment variable for the public key certificate exists copy
+# this file to the target root file system
+##
+if [ ! -z "$SWU_IMAGE_CERT_PATH" ] & [ -e "$SWU_IMAGE_CERT_PATH" ];
+then
+    # Install developer cert
+    cp $SWU_IMAGE_CERT_PATH $TARGET_DIR/etc/ssl/certs/sw-update-cert.pem
+fi

@@ -8,17 +8,28 @@ test -x "$DAEMON" || exit 0
 NAME="Swupdate"
 DESC="embedded systems updater"
 PID=/var/run/swupdate.pid
+DAEMON_ARGS="-L -w \"-r /var/www/swupdate\""
+IMAGE_CERT=/etc/ssl/certs/sw-update-cert.pem
+
+test -e /etc/default/swupdate && . /etc/default/swupdate
+
+# Our swupdate only works with signed images
+test -r $IMAGE_CERT || exit 1
+
+# Create link /dev/standby_root -> /dev/mmcblk0pX
+link_update_target
 
 start() {
     printf "Starting $NAME: "
     start-stop-daemon -S -v -b -m -p $PID \
-                      -x  $DAEMON -- -L -w "-r /var/www/swupdate"
+                      -x  $DAEMON -- -k $IMAGE_CERT -L -w "-r /var/www/swupdate"
+
     [ $? = 0 ] && echo "OK" || echo "FAIL"
 }
 
 stop() {
     printf "Stopping $NAME: "
-    start-stop-daemon -K -q -p $PID 
+    start-stop-daemon -K -q -p $PID
     [ $? = 0 ] && echo "OK" || echo "FAIL"
 }
 restart() {
@@ -42,5 +53,3 @@ case "$1" in
 esac
 
 exit $?
-
-
