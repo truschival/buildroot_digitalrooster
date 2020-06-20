@@ -1,12 +1,21 @@
 #!/bin/bash
 
 set -e
-BOARD_DIR="$(dirname $0)"
-BOARD_NAME="$(basename $BOARD_DIR)"
+
+# iterate over command line arges and extract -s to set SWUIMAGE_CFG
+. $(dirname $0)/post_image_opts.sh
+
+[ -z "$SWUIMAGE_CFG"  ] && {
+    echo "image configuration option -s is missing!"
+    exit 1
+}
 
 # Version for swu-file name and sw-description
-. $BOARD_DIR/VERSION_INFO
-SWU_INPUT_FILES="zImage digitalrooster-rpi0w.dtb sw-update.sh rootfs.ext2.gz"
+test -r $SWUIMAGE_CFG || {
+    echo "cannot read swu image configuration"
+    exit 1 
+}
+. $SWUIMAGE_CFG
 
 function set_hash ()
 {
@@ -23,11 +32,14 @@ cp "${BOARD_DIR}/sw-description.in" "$BINARIES_DIR/sw-description"
 cp "${BOARD_DIR}/sw-update.sh" "$BINARIES_DIR/sw-update.sh"
 
 sed -i -e "s%@VERSION@%$VERSION%g" $BINARIES_DIR/sw-description
+# Update name of device tree in sw-description
+sed -i -e "s%@DTB_NAME@%$DTB_NAME%g" $BINARIES_DIR/sw-description
+
 gzip -9 -k -f $BINARIES_DIR/rootfs.ext2 
 
 # update hashes in sw-description template
 set_hash $BINARIES_DIR/zImage @KERNEL_HASH@
-set_hash $BINARIES_DIR/digitalrooster-rpi0w.dtb @DTB_HASH@
+set_hash $BINARIES_DIR/$DTB_NAME @DTB_HASH@
 set_hash $BINARIES_DIR/sw-update.sh @SW_UPDATE_SCRIPT_HASH@
 set_hash $BINARIES_DIR/rootfs.ext2.gz @ROOTFS_IMAGE_HASH@
 

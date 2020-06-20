@@ -84,13 +84,13 @@
 		};
 	};
 
-	gpio_keys {
+	gpiokeys {
 		compatible = "gpio-keys";
 		pinctrl-names = "default";
-
+		label = "gpio-keys";
 		sw4 {
 			label = "power";
-			linux,code = <BTN_0>;
+			linux,code = <KEY_HOME>;
 			gpios = <&r_pio 0 3 GPIO_ACTIVE_LOW>;
 		};
 
@@ -128,18 +128,19 @@
 	};
 
 	/* Gray rotary encoder e.g. Grayhill 61C1 in relative mode */
-	rotary: rotary@0 {
+	volume {
 		compatible = "rotary-encoder";
+		name = "volume";
 		status = "okay";
 		pinctrl-names = "default";
 		pinctrl-0 = <&rotary_pins>;
-		gpios = <&pio 0 8  GPIO_ACTIVE_HIGH>, /* PA8 */
-			<&pio 0 21 GPIO_ACTIVE_HIGH>; /* PA21 */
-		linux,axis = <0>;
-		rotary-encoder,relative-axis;
+		gpios = <&pio 0 21 GPIO_ACTIVE_HIGH>, /* PA21 */
+			<&pio 0 8  GPIO_ACTIVE_HIGH>; /* PA8 */
+		linux,axis = <REL_X>; /* REL_X=0 */
 		rotary-encoder,encoding = "gray";
-		rotary-encoder,steps = <32>;
-		rotary-encoder,steps-per-period = <1>;
+		rotary-encoder,relative-axis;
+		rotary-encoder,steps = <32>; /* 24 default */
+		rotary-encoder,steps-per-period = <4>;
 	};
 
 	/* MAX98357A Codec */
@@ -345,6 +346,9 @@
 	tlc59208f: tlc59208f@48 {
 		compatible = "ti,tlc59108";
 		reg = <0x21>; /* should be 0x42 */
+		#address-cells = <1>;
+		#size-cells = <0>;
+
 		/* red */
 		r@2 {
 			label = "RGB:r";
@@ -395,5 +399,4 @@
 		trickle-resistor-ohms = <1120>;
 		/* trickle-diode-disable; */
 	};
-
 };
