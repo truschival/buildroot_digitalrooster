@@ -1,0 +1,8 @@
+# Touch screen
+SUBSYSTEM=="input", ATTRS{name}=="*ft5x06*", SYMLINK+="input/touch"
+
+# Push button On/Off, Keycode HOME (102)
+SUBSYSTEM=="input", ATTRS{name}=="gpio-keys", SYMLINK+="input/keys"
+
+# Rotary encoder, volume
+SUBSYSTEM=="input", ATTRS{name}=="volume", SYMLINK+="input/volume"

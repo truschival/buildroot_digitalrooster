@@ -89,3 +89,26 @@ network={
 export LOCAL_WIFI_NET_CFG=~/my_wifi_conf
 make
 ```
+
+### Signed SWUpdate images
+
+[SWUpdate](https://sbabic.github.io/swupdate/index.html) installed with
+`rpi0w_defconfig` is configured to verify image signatures.  Once compiled with
+signed image verification this feature is no longer optional.  This means if you
+want to use sw-update images to update your DigitalRooster you have to create
+signed images.
+
+To do this you need a public certificate that is installed on DigitalRooster and
+will be used by sw-update to verify your image. You will also need a private key
+to sign your image.
+
+These to files are passed to the build by two environment variables:
+*  The variable `SWU_IMAGE_CERT_PATH` contains the path of the public
+   certificate that will be installed in `/etc/ssl/certs/sw-update-cert.pem`
+   used for validating signatures at runtime.
+*  The environment variable `SWU_IMAGE_SIG_KEY_PATH` contains the path
+   to a path of the private RSA key matching the public cert used for
+   signing in the .swu file.
+
+To create the key and the ceritficate follow the documentation of
+[Update images from verified source](https://sbabic.github.io/swupdate/signed_images.html)

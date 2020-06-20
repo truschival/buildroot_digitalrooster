@@ -15,29 +15,44 @@ config BR2_PACKAGE_DIGITALROOSTERGUI
 	select BR2_PACKAGE_DEJAVU_SANS_CONDENSED
 	select BR2_PACKAGE_DEJAVU_SERIF
 	select BR2_PACKAGE_DEJAVU_SERIF_CONDENSED
-	select BR2_PACKAGE_DEJAVU_MONO 
+	select BR2_PACKAGE_DEJAVU_MONO
 	help
-	Digital alarm clock and podcast / internet radio player
+	  Digital alarm clock and podcast / internet radio player
 
 if BR2_PACKAGE_DIGITALROOSTERGUI
 ### Version selection
 choice
-prompt "Package Version"
+	prompt "Package Version"
 
 config BR2_PACKAGE_DIGITALROOSTERGUI_VERSION_STABLE
 	bool "master"
 	help
-	"latest stable version"
+	  "latest stable version"
 
 config BR2_PACKAGE_DIGITALROOSTERGUI_VERSION_DEVEL
 	bool "develop"
 	help
-	"Latest development branch" 
+	  "Latest development branch"
 
 endchoice
 
+# Other build configs
+config BR2_PACKAGE_DIGITALROOSTERGUI_CUSTOM_CONFIG
+	bool "use custom config file"
+
+config BR2_PACKAGE_DIGITALROOSTERGUI_CUSTOM_CONFIG_FILE
+	string "path to custom config file"
+	default "./digitalrooster.json"
+	depends on BR2_PACKAGE_DIGITALROOSTERGUI_CUSTOM_CONFIG
+	help
+	  config file will be copied to /persistent/digitalrooster.json
+
+config BR2_PACKAGE_DIGITALROOSTERGUI_DEBUG
+	bool
+	prompt "Build with debug information "
+
 config BR2_PACKAGE_DIGITALROOSTERGUI_TEST
-	bool "Build and install unit tests on target"
+	bool "Build tests binary for target"
 
 config BR2_PACKAGE_DIGITALROOSTERGUI_REST
 	bool "Enable REST API"
@@ -47,9 +62,5 @@ config BR2_PACKAGE_DIGITALROOSTERGUI_REST_PORT
 	int "REST API TCP port"
 	default 6666
 	depends on BR2_PACKAGE_DIGITALROOSTERGUI_REST
-
-config BR2_PACKAGE_DIGITALROOSTERGUI_DEBUG
-	bool
-	prompt "Build with debug information "
 
 endif #package
