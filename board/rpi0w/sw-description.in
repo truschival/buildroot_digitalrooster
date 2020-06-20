@@ -1,0 +1,39 @@
+{
+    "software" : {
+	"version" : "@VERSION@",
+	"description" : "Update Image for DigitalRooster on Raspberry Pi Zero W", 
+	"hardware-compatibility" : [ "Mk3a", "Mk3b"],
+	
+	"files" : [
+	    {
+		"filename" : "zImage",
+		"path" : "/boot/zImage",
+		"sha256" : "@KERNEL_HASH@"
+	    },
+	    {
+		"filename" : "digitalrooster-rpi0w.dtb",
+		"path" : "/boot/digitalrooster-rpi0w.dtb",
+		"sha256" : "@DTB_HASH@"
+	    }
+	],
+
+	"scripts" : [
+	    {
+		"filename" : "sw-update.sh",
+		"type" : "shellscript",
+		"sha256" : "@SW_UPDATE_SCRIPT_HASH@"
+	    }
+	],
+	
+	"images" : [
+	    {
+		"filename" : "rootfs.ext2.gz",
+		"type" : "raw",
+		"compressed" : "zlib",
+		"device" : "/dev/standby_root",
+		"sha256" : "@ROOTFS_IMAGE_HASH@"
+	    }
+	]
+	
+    }
+}

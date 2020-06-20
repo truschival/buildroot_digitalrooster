@@ -1,0 +1,26 @@
+# Common functions and variables for sw-update process
+
+ROOT_PART_2="/dev/mmcblk0p2"
+ROOT_PART_3="/dev/mmcblk0p3"
+
+ACTIVE_ROOT=$(cat /proc/cmdline | \
+		  sed 's%.*root=\(\/dev\/mmcblk0p[[:digit:]]\).*%\1%g')
+
+function get_standby_root(){
+    case $ACTIVE_ROOT in
+	$ROOT_PART_2)
+	    STANDBY_ROOT=$ROOT_PART_3
+	;;
+	$ROOT_PART_3)
+	    STANDBY_ROOT=$ROOT_PART_2
+	;;
+	*)
+	    echo "can't determine standby root"   
+	;;
+    esac
+}
+
+function link_update_target(){
+    get_standby_root
+    ln -sf ${STANDBY_ROOT} /dev/standby_root
+}
