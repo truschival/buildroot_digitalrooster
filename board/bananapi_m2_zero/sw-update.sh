@@ -8,39 +8,16 @@
 # /dev/mmcblk0p2 rootfs1 (ext) active or standby
 # /dev/mmcblk0p3 rootfs2 (ext) active or standby
 # /dev/mmcblk0p4 persistent data (application and user config)
-# 
+#
 # standby partition will be updated by this script
-# 
+#
 #
 # !! Do not run if you don't understand what it does!!
 ################################################################################
 
 set -e
-ROOT_PART_2="/dev/mmcblk0p2"
-ROOT_PART_3="/dev/mmcblk0p3"
 
-ACTIVE_ROOT=$(cat /proc/cmdline | \
-		  sed 's%.*root=\(\/dev\/mmcblk0p[[:digit:]]\).*%\1%g')
-
-
-function get_standby_root(){
-    case $ACTIVE_ROOT in
-	$ROOT_PART_2)
-	    STANDBY_ROOT=$ROOT_PART_3
-	;;
-	$ROOT_PART_3)
-	    STANDBY_ROOT=$ROOT_PART_2
-	;;
-	*)
-	    echo "can't determine standby root"   
-	;;
-    esac
-}
-
-function link_update_target(){
-    get_standby_root
-    ln -sf ${STANDBY_ROOT} /dev/standby_root
-}
+test -e /etc/default/swupdate && . /etc/default/swupdate
 
 # Make sure uEnv exists and contains ACTIVE_ROOT and STANDBY_ROOT variables
 function check_uenv(){
@@ -55,15 +32,15 @@ function check_uenv(){
     then
 	echo "malformatted uEnv.txt - ACTIVE_ROOT not found"
 	exit -2
-    fi	
+    fi
 
     grep -q "STANDBY_ROOT=/dev/mmcblk0" /boot/uEnv.txt
     if [ $? -ne 0 ]
     then
 	echo "malformatted uEnv.txt - STANDBY_ROOT not found"
 	exit -2
-    fi	
-    
+    fi
+
 }
 
 
@@ -76,10 +53,18 @@ function update_uenv(){
 
 
 function preinst_actions(){
-    check_uenv
-    link_update_target
-}
+    get_standby_root
+    if [ -e $STANDBY_ROOT ] ;
+    then
+	printf "Updating %s" $STANDBY_ROOT
+    else
+	printf "standby root %s not found!" $STANDBY_ROOT
+	exit 1
+    fi
 
+
+    check_uenv
+}
 
 
 function postinst_actions(){
