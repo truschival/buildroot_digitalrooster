@@ -14,7 +14,9 @@ test -r $SWUPDATE_CFG || exit -1
 
 # Add local processor id as serial number to swupdate.cfg
 PROC_SERIAL=$(grep Serial /proc/cpuinfo | sed -E 's/(.*) ([^[:space:]]*)$/\2/g')
+HARDWARE=$(grep Hardware  /proc/cpuinfo | sed -E 's/(.*) ([^[:space:]]*)$/\2/g')
 sed -i -e "s%@PROC_SERIAL@%$PROC_SERIAL%g" $SWUPDATE_CFG
+sed -i -e "s%@HARDWARE@%$HARDWARE%g" $SWUPDATE_CFG
 # Add Hostname
 HOSTNAME=$(hostname)
 sed -i -e "s%@HOSTNAME@%$HOSTNAME%g" $SWUPDATE_CFG

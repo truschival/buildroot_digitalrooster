@@ -5,7 +5,7 @@
 # -s sets SWUIMAGE_CFG path to file containing:
 #    DTB_NAME : the name of the device tree
 #    SWU_INPUT_FILES: files to include in .swu image (rootfs, sw-update.sh...)
-# $TARGET_DIR/etc/digitalrooster_build_info for revision 
+# $TARGET_DIR/etc/digitalrooster_build_info for revision
 # sw-description.in : a board specific template file (copied to $BINARIES_DIR)
 # sw-update.sh      : optional board specific update script included in .swu
 ########
@@ -23,7 +23,7 @@ set -e
 # Version for swu-file name and sw-description
 test -r $SWUIMAGE_CFG || {
     echo "cannot read swu image configuration"
-    exit 1 
+    exit 1
 }
 . $SWUIMAGE_CFG
 
@@ -52,7 +52,7 @@ sed -i -e "s%@VERSION@%$REVISION%g" $BINARIES_DIR/sw-description
 # Update name of device tree in sw-description
 sed -i -e "s%@DTB_NAME@%$DTB_NAME%g" $BINARIES_DIR/sw-description
 
-gzip -9 -k -f $BINARIES_DIR/rootfs.ext2 
+gzip -9 -k -f $BINARIES_DIR/rootfs.ext2
 
 # update hashes in sw-description template
 set_hash $BINARIES_DIR/zImage @KERNEL_HASH@
@@ -75,7 +75,7 @@ then
     then
 	echo " Signature verification failed! "
 	exit 1
-    fi    
+    fi
     SW_DESC_HEADER="$SW_DESC_HEADER sw-description.sig"
 fi
 
@@ -84,4 +84,3 @@ echo "> Creating swu-image: $BOARD-$REVISION.swu"
 cd $BINARIES_DIR
 find $SW_DESC_HEADER $SWU_INPUT_FILES \
     | cpio -ov -H crc > $BOARD-$REVISION.swu
-

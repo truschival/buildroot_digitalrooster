@@ -55,7 +55,6 @@ function set_version_info(){
     echo "BUILD_DATE=$ts"     >> ${TARGET_DIR}/etc/digitalrooster_build_info
 }
 
-
 echo "> Updating WPA Supplicant config LOCAL_WIFI_NET_CFG=${LOCAL_WIFI_NET_CFG}"
 update_wpa_config
 echo "> Updating /etc/fstab"
