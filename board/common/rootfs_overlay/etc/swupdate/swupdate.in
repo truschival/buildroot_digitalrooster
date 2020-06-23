@@ -1,0 +1,52 @@
+# Common functions and variables for sw-update process
+# used as sourced file in startup scripts or update-scripts
+
+ROOT_PART_2="/dev/mmcblk0p2"
+ROOT_PART_3="/dev/mmcblk0p3"
+ACTIVE_ROOT=$(cat /proc/cmdline | \
+		  sed 's%.*root=\(\/dev\/mmcblk0p[[:digit:]]\).*%\1%g')
+
+
+function now(){
+    TS=$(date +%Y-%m-%d_%H:%M:%S)
+}
+
+function log_err(){
+    now
+    echo "%TS ERR $@" >> /persistent/update.log
+}
+
+function log_info(){
+    now
+    echo "$TS INF $@" >> /persistent/update.log
+}
+
+
+function get_standby_root(){
+    case $ACTIVE_ROOT in
+	$ROOT_PART_2)
+	    STANDBY_ROOT=$ROOT_PART_3
+	    ;;
+	$ROOT_PART_3)
+	    STANDBY_ROOT=$ROOT_PART_2
+	    ;;
+	*)
+	    log_err "can't determine standby root"
+	    exit 1
+	    ;;
+    esac
+}
+
+function link_update_target(){
+    get_standby_root
+    ln -sf ${STANDBY_ROOT} /dev/standby_root
+}
+
+function check_standby_root_link(){
+    get_standby_root
+    if [ ! -L /dev/standby_root ] || [ ! -e $STANDBY_ROOT ] ;
+    then
+        log_err "standby root $STANDBY_ROOT not found!"
+	exit 2
+    fi
+}

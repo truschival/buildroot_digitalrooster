@@ -5,25 +5,32 @@ DAEMON="/usr/bin/swupdate"
 
 test -x "$DAEMON" || exit 0
 
-NAME="Swupdate"
-DESC="embedded systems updater"
+NAME="SWUpdate"
+DESC="Embedded systems updater"
 PID=/var/run/swupdate.pid
-DAEMON_ARGS="-L -w \"-r /var/www/swupdate\""
-IMAGE_CERT=/etc/ssl/certs/sw-update-cert.pem
+SWUPDATE_CFG=/etc/default/swupdate.cfg
 
-test -e /etc/default/swupdate && . /etc/default/swupdate
+test -r $SWUPDATE_CFG || exit -1
 
-# Our swupdate only works with signed images
-test -r $IMAGE_CERT || exit 1
+# Add local processor id as serial number to swupdate.cfg
+PROC_SERIAL=$(grep Serial /proc/cpuinfo | sed -E 's/(.*) ([^[:space:]]*)$/\2/g')
+sed -i -e "s%@PROC_SERIAL@%$PROC_SERIAL%g" $SWUPDATE_CFG
+# Add Hostname
+HOSTNAME=$(hostname)
+sed -i -e "s%@HOSTNAME@%$HOSTNAME%g" $SWUPDATE_CFG
+# Add Revision info
+test -r /etc/digitalrooster_build_info && . /etc/digitalrooster_build_info
+sed -i -e "s%@BUILD_DATE@%$BUILD_DATE%g" $SWUPDATE_CFG
+sed -i -e "s%@DIST_REVISION@%$REVISION%g" $SWUPDATE_CFG
+KERNEL_REVISION=$(uname -r)
+sed -i -e "s%@KERNEL_REVISION@%$KERNEL_REVISION%g" $SWUPDATE_CFG
 
-# Create link /dev/standby_root -> /dev/mmcblk0pX
-link_update_target
 
+# Start
 start() {
     printf "Starting $NAME: "
     start-stop-daemon -S -v -b -m -p $PID \
-                      -x  $DAEMON -- -k $IMAGE_CERT -L -w "-r /var/www/swupdate"
-
+                      -x  $DAEMON -- -f $SWUPDATE_CFG -w "" -u "-c 2"
     [ $? = 0 ] && echo "OK" || echo "FAIL"
 }
 
@@ -32,6 +39,7 @@ stop() {
     start-stop-daemon -K -q -p $PID
     [ $? = 0 ] && echo "OK" || echo "FAIL"
 }
+
 restart() {
     stop
     start
