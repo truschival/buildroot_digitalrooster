@@ -11,7 +11,12 @@ This repository is part of a larger project. For more information head to
 For detailed information on the hardware check out
 [digitalrooster.dev/hardware](https://digitalrooster.dev/hardware).  This
 software includes configurations for Raspberry Pi Zero W and Banana Pi M2
-Zero. The device tree and kernel drivers include support for following hardware:
+Zero. The Raspberry Pi port works great while Banana Pi is still under
+development.  We have to figure out the performance issues i.e. why it takes
+ages for the display to update after a touch event. I don't consider this port
+production ready yet.
+
+The device tree and kernel drivers include support for following hardware:
 
 -   Adafruit [PiTFT2.8" capacitive touch](https://learn.adafruit.com/downloads/pdf/adafruit-2-8-pitft-capacitive-touch.pdf)
 
@@ -60,7 +65,7 @@ does not have a hardware shutdown pin.
 
 Copyright 2018 by Thomas Ruschival <thomas@ruschival.de>
 
-Licenced under the GNU PUBLIC LICENSE Version 2. The license terms can be found
+Licensed under the GNU PUBLIC LICENSE Version 2. The license terms can be found
 in the file [LICENSE](./LICENSE)
 
 ---
