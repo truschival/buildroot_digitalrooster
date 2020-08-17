@@ -1,6 +1,10 @@
 #!/bin/sh
 
-PATH="/sbin:/bin:/usr/sbin:/usr/bin"
+##
+# Creates a swupdate.cfg file from template substituting system specific data
+# such as processor id, kernel revision etc.
+## 
+
 DAEMON="/usr/bin/swupdate"
 
 test -x "$DAEMON" || exit 0
@@ -8,18 +12,30 @@ test -x "$DAEMON" || exit 0
 NAME="SWUpdate"
 DESC="Embedded systems updater"
 PID=/var/run/swupdate.pid
+PATH="/sbin:/bin:/usr/sbin:/usr/bin"
+
+SWUPDATE_CFG_TEMPLATE=/etc/default/swupdate.cfg.in
 SWUPDATE_CFG=/etc/default/swupdate.cfg
 
-test -r $SWUPDATE_CFG || exit -1
+test -r $SWUPDATE_CFG_TEMPLATE || exit -1
 
 # Add local processor id as serial number to swupdate.cfg
 PROC_SERIAL=$(grep Serial /proc/cpuinfo | sed -E 's/(.*) ([^[:space:]]*)$/\2/g')
-HARDWARE=$(grep Hardware  /proc/cpuinfo | sed -E 's/(.*) ([^[:space:]]*)$/\2/g')
-sed -i -e "s%@PROC_SERIAL@%$PROC_SERIAL%g" $SWUPDATE_CFG
+# Use template and add processor serial
+sed -e "s%@PROC_SERIAL@%$PROC_SERIAL%g" $SWUPDATE_CFG_TEMPLATE > $SWUPDATE_CFG
+
+HARDWARE=$(grep Hardware  /proc/cpuinfo | sed -E 's/(.*: )(.*)$/\2/g')
+# modify inplace (not template) and add hardware info
 sed -i -e "s%@HARDWARE@%$HARDWARE%g" $SWUPDATE_CFG
+
+# Model info (Space & slash is not allowed)
+MODEL=$(cat /proc/device-tree/model | tr -d '[:space:]/')
+sed -i -e "s%@MODEL@%$MODEL%g" $SWUPDATE_CFG
+
 # Add Hostname
 HOSTNAME=$(hostname)
 sed -i -e "s%@HOSTNAME@%$HOSTNAME%g" $SWUPDATE_CFG
+
 # Add Revision info
 test -r /etc/digitalrooster_build_info && . /etc/digitalrooster_build_info
 sed -i -e "s%@BUILD_DATE@%$BUILD_DATE%g" $SWUPDATE_CFG
@@ -27,8 +43,6 @@ sed -i -e "s%@DIST_REVISION@%$REVISION%g" $SWUPDATE_CFG
 KERNEL_REVISION=$(uname -r)
 sed -i -e "s%@KERNEL_REVISION@%$KERNEL_REVISION%g" $SWUPDATE_CFG
 
-
-# Start
 start() {
     printf "Starting $NAME: "
     start-stop-daemon -S -v -b -m -p $PID \
