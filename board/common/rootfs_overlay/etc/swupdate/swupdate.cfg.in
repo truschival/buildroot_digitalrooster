@@ -1,6 +1,6 @@
-globals: {
+globals : {
     verbose = true;
-    loglevel= 6; /* 1 (no log) - 6 */
+    loglevel= 3; /* 1 (no log) - 6 */
     syslog = true;
     public-key-file = "/etc/swupdate/sw-update-cert.pem";
     /* Common pre-update command to create link to standby root partition */
@@ -11,6 +11,7 @@ globals: {
 identify : (
     { name = "build_date"; value = "@BUILD_DATE@"; },
     { name = "hardware";   value = "@HARDWARE@"; },
+    { name = "model";      value = "@MODEL@"; },
     { name = "hostname";   value = "@HOSTNAME@"; },
     { name = "revision";   value = "@DIST_REVISION@"; },
     { name = "serialNo";   value = "@PROC_SERIAL@"; }
@@ -29,21 +30,20 @@ versions : (
 
 suricatta: {
     tenant = "default";
-    id =  "@HOSTNAME@:@PROC_SERIAL@";
-    url = "http://villastraylight:8080";
+    id =  "@MODEL@:@PROC_SERIAL@";
+    url = "https://hawkbit.192.168.178.3.xip.io";
     nocheckcert = true;
-    polldelay = 20;
+    polldelay = 100;
     retry = 4;
     retrywait = 300;
     loglevel = 10;
     userid = 1000;
     groupid = 1000;
-    enable = true;
 };
 
 webserver: {
     document_root = "/var/www/swupdate";
     listening_ports = 8000;
     /* global-auth-file = null ; */
-    run-postupdate = false;
+    /* run-postupdate = false;   */
 };
