@@ -16,8 +16,7 @@
 ################################################################################
 
 set -e
-
-test -e /etc/default/swupdate && . /etc/default/swupdate
+test -e /etc/swupdate/swupdate.in && . /etc/swupdate/swupdate.in
 
 function update_cmdline(){
     get_standby_root
@@ -40,7 +39,7 @@ function preinst_actions(){
 function postinst_actions(){
     update_cmdline
     sync
-    echo "rebooting"
+    printf "rebooting"
     reboot
 }
 

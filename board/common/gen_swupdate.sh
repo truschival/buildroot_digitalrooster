@@ -1,4 +1,14 @@
 #!/bin/bash
+########
+# Script to create swu-image file for system update
+# is configured by files and command line options
+# -s sets SWUIMAGE_CFG path to file containing:
+#    DTB_NAME : the name of the device tree
+#    SWU_INPUT_FILES: files to include in .swu image (rootfs, sw-update.sh...)
+# $TARGET_DIR/etc/digitalrooster_build_info for revision
+# sw-description.in : a board specific template file (copied to $BINARIES_DIR)
+# sw-update.sh      : optional board specific update script included in .swu
+########
 
 set -e
 
@@ -13,9 +23,16 @@ set -e
 # Version for swu-file name and sw-description
 test -r $SWUIMAGE_CFG || {
     echo "cannot read swu image configuration"
-    exit 1 
+    exit 1
 }
 . $SWUIMAGE_CFG
+
+# Figure out board name
+BOARD=$(basename $BOARD_DIR)
+
+#source build information REVISION and BUILD_DATE
+test -r $TARGET_DIR/etc/digitalrooster_build_info && \
+    . $TARGET_DIR/etc/digitalrooster_build_info
 
 function set_hash ()
 {
@@ -31,11 +48,11 @@ SW_DESC_HEADER="sw-description "
 cp "${BOARD_DIR}/sw-description.in" "$BINARIES_DIR/sw-description"
 cp "${BOARD_DIR}/sw-update.sh" "$BINARIES_DIR/sw-update.sh"
 
-sed -i -e "s%@VERSION@%$VERSION%g" $BINARIES_DIR/sw-description
+sed -i -e "s%@VERSION@%$REVISION%g" $BINARIES_DIR/sw-description
 # Update name of device tree in sw-description
 sed -i -e "s%@DTB_NAME@%$DTB_NAME%g" $BINARIES_DIR/sw-description
 
-gzip -9 -k -f $BINARIES_DIR/rootfs.ext2 
+gzip -9 -k -f $BINARIES_DIR/rootfs.ext2
 
 # update hashes in sw-description template
 set_hash $BINARIES_DIR/zImage @KERNEL_HASH@
@@ -50,20 +67,20 @@ then
     openssl dgst -sha256 -sign $SWU_IMAGE_SIG_KEY_PATH \
 	     $BINARIES_DIR/sw-description >  $BINARIES_DIR/sw-description.sig
 
-    # check if signatures can be verified with public cert
-    openssl dgst -sha256 -verify $TARGET_DIR/etc/ssl/certs/sw-update-cert.pem\
+    # check if signatures can be verified with public cert installed on target
+    openssl dgst -sha256 -verify $TARGET_DIR/etc/swupdate/sw-update-cert.pem\
 	    -signature $BINARIES_DIR/sw-description.sig  \
 	    $BINARIES_DIR/sw-description
     if [ $? -ne "0" ];
     then
 	echo " Signature verification failed! "
 	exit 1
-    fi    
+    fi
     SW_DESC_HEADER="$SW_DESC_HEADER sw-description.sig"
 fi
 
 # Work in BINARIES_DIR  Create cpio
+echo "> Creating swu-image: $BOARD-$REVISION.swu"
 cd $BINARIES_DIR
 find $SW_DESC_HEADER $SWU_INPUT_FILES \
-    | cpio -ov -H crc > sw-update-$VERSION.swu
-
+    | cpio -ov -H crc > $BOARD-$REVISION.swu

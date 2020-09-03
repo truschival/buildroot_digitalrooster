@@ -31,11 +31,11 @@ function update_wpa_config() {
 function update_fstab() {
     local FSTAB_PATH=${TARGET_DIR}/etc/fstab
     local FSTAB_PERSISTENT_GUARD="# Added by common/post_build.sh"
-    local FSTAB_BOOT_ENTRY="/dev/mmcblk0p1  /boot    vfat    defaults        0       0"
-    local FSTAB_PERSISTENT_ENTRY="/dev/mmcblk0p4  /persistent     ext4    defaults        0       0"
-    
+    local FSTAB_BOOT_ENTRY="/dev/mmcblk0p1	/boot	vfat    defaults        0       0"
+    local FSTAB_PERSISTENT_ENTRY="/dev/mmcblk0p4	/persistent	ext4    defaults        0       0"
+
     mkdir -p "${TARGET_DIR}/boot"
-    
+
     grep -q "${FSTAB_PERSISTENT_GUARD}" ${FSTAB_PATH}
     if [ $? -eq 1 ];
     then
@@ -47,9 +47,20 @@ function update_fstab() {
     fi
 }
 
-echo "Updating WPA Supplicant config LOCAL_WIFI_NET_CFG=${LOCAL_WIFI_NET_CFG}"
+function set_version_info(){
+    EXTERNAL_DIR="$(dirname $0)"
+    GIT_DESC=$(git -C $EXTERNAL_DIR describe --dirty)
+    local ts=$(date +%Y-%m-%d_%H:%M:%S)
+    echo "REVISION=$GIT_DESC" >  ${TARGET_DIR}/etc/digitalrooster_build_info
+    echo "BUILD_DATE=$ts"     >> ${TARGET_DIR}/etc/digitalrooster_build_info
+}
+
+echo "> Updating WPA Supplicant config LOCAL_WIFI_NET_CFG=${LOCAL_WIFI_NET_CFG}"
 update_wpa_config
+echo "> Updating /etc/fstab"
 update_fstab
+echo "> Setting Version_info"
+set_version_info
 
 ##
 # If a local environment variable for the public key certificate exists copy
@@ -58,5 +69,5 @@ update_fstab
 if [ ! -z "$SWU_IMAGE_CERT_PATH" ] & [ -e "$SWU_IMAGE_CERT_PATH" ];
 then
     # Install developer cert
-    cp $SWU_IMAGE_CERT_PATH $TARGET_DIR/etc/ssl/certs/sw-update-cert.pem
+    cp $SWU_IMAGE_CERT_PATH $TARGET_DIR/etc/swupdate/sw-update-cert.pem
 fi

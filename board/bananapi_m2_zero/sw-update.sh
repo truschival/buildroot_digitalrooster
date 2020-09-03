@@ -17,7 +17,8 @@
 
 set -e
 
-test -e /etc/default/swupdate && . /etc/default/swupdate
+# provides functions like get_standby_root etc.
+test -e /etc/swupdate/swupdate.in && . /etc/swupdate/swupdate.in
 
 # Make sure uEnv exists and contains ACTIVE_ROOT and STANDBY_ROOT variables
 function check_uenv(){
@@ -40,7 +41,6 @@ function check_uenv(){
 	echo "malformatted uEnv.txt - STANDBY_ROOT not found"
 	exit -2
     fi
-
 }
 
 
@@ -61,8 +61,6 @@ function preinst_actions(){
 	printf "standby root %s not found!" $STANDBY_ROOT
 	exit 1
     fi
-
-
     check_uenv
 }
 
