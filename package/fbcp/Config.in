@@ -1,7 +1,0 @@
-config BR2_PACKAGE_FBCP
-	bool "FBCP" if BR2_DIGITALROOSTER_TARGET_RPI_ZERO_W
-	depends on BR2_DIGITALROOSTER_TARGET_RPI_ZERO_W
-	select BR2_PACKAGE_RPI_USERLAND
-	help
-        Framebuffer Copy utility to capture /dev/fb0 and display 
-        the content on /dev/fb1
