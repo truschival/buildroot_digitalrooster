@@ -1,5 +1,5 @@
 # locally computed
-sha256 f9a0e46d38627c7229002e43d911a3fd12718c29182eb3a9b1d7e4bf13525803  digitalroostergui-v0.13.1.tar.gz
+sha256 4f105950699947e106f94d0845ae6c8607bd21e5821de1e47a7150bc9aab698f  digitalroostergui-v0.14.tar.gz
 
 # development head
 none   none	digitalroostergui-develop.tar.gz
