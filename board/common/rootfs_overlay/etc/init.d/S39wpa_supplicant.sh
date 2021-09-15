@@ -3,7 +3,7 @@
 #
 set -e
 DAEMON=/usr/sbin/wpa_supplicant
-DAEMON_ARGS="-i wlan0 -Dwext -c/etc/wpa_supplicant.conf "
+DAEMON_ARGS="-i wlan0 -Dnl80211 -c/etc/wpa_supplicant.conf "
 PIDFILE=/var/run/wpa_supplicant.pid
 
 case "$1" in

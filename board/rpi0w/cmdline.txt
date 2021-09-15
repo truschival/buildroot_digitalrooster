@@ -1,1 +1,1 @@
-cma=128M root=/dev/mmcblk0p2 rootwait console=ttyAMA0,115200
+cma=128M root=/dev/mmcblk0p2 rootwait console=ttyS0,115200

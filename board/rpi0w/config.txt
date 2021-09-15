@@ -1,11 +1,21 @@
+# Check https://www.raspberrypi.org/documentation/computers/config_txt.html
+
+# start_file=start_db.elf
+# fixup_file=fixup_db.dat
+
 device_tree=digitalrooster-rpi0w.dtb
-# device_tree=bcm2835-rpi-zero-w.dtb
 dtdebug=on
 
+# filename for kernel (default=kernel.img)
 kernel=zImage
+
+# filename for kernel commandline (default=cmdline.txt)
+cmdline=cmdline.txt
 
 # Enable serial console
 enable_uart=1
+# show rpi-firmware second stage bootloader info on serial console
+uart_2ndstage=1
 
 # Do not add weird parameters for HDMI or composite to kernel cmdline
 disable_fw_kms_setup=1
@@ -18,4 +28,3 @@ gpu_mem_1024=256
 
 # We don't use HDMI - put it in low power mode
 hdmi_blanking=1
-
