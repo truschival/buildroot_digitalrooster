@@ -1,3 +1,4 @@
 # Sync every hour with pool servers
-0 * * * * /usr/bin/ntpdate 0.pool.ntp.org 2.pool.ntp.org ntp1.fau.de
+5  * * * *  /usr/bin/ntpdate 0.pool.ntp.org 2.pool.ntp.org ntp1.fau.de
+10 * * * *  /sbin/hwclock -w -u
 
