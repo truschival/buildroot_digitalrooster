@@ -1,6 +1,9 @@
 # Touch screen
 SUBSYSTEM=="input", ATTRS{name}=="*ft5x06*", SYMLINK+="input/touch"
 
+# Starting Kernel 5.15 the touch driver appears to identify as EP0110M09
+SUBSYSTEM=="input", ATTRS{name}=="EP0110M09", SYMLINK+="input/touch"
+
 # Push button On/Off, Keycode HOME (102)
 SUBSYSTEM=="input", ATTRS{name}=="gpio-keys", SYMLINK+="input/keys"
 
