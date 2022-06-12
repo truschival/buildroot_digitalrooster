@@ -96,7 +96,9 @@ BR2_CCACHE_DIR=$(HOME)/tmp/buildroot-ccache-bpim20
 BR_CACHE_DIR=$(HOME)/tmp/buildroot-ccache-bpim20
 BR2_TARGET_GENERIC_ROOT_PASSWD=foo
 BR2_TARGET_GENERIC_HOSTNAME=bpim2zero
+
 DIGITALROOSTERGUI_OVERRIDE_SRCDIR=/home/ruschi/Coding/DigitalRooster
+
 ```
 
 ### Target build configurations
@@ -109,6 +111,7 @@ Currently the following configurations (`XXX_defconfig`) for exist:
     ( *in development* )
 
 #### Environment variables
+
 Some properties that are very specific to your home such as wifi is configured
 through environment variables.
 
@@ -119,6 +122,14 @@ through environment variables.
 Set the environment variable ``LOCAL_WIFI_NET_CFG`` to a file path containing
 your wifi network configuration. The content of this file will be added
 to ``/etc/wpa_supplicant.conf`` of your target file system.
+
+##### SSH public key file
+
+``boards/common/post_build.sh`` has a hook to a public key to
+``/root/.ssh/authorized_keys``.
+
+Set your environment variable ``LOCAL_SSH_PUBKEY`` to the _public_ key file of
+the identity you want to use for ssh authentication.
 
 ##### Signed SWUpdate images (optional)
 
@@ -149,7 +160,7 @@ To create the key and the ceritficate follow the documentation of
 For the anxious and impatient among you here is a copy-and-paste runthrough.
 The only thing I can't give you is the SSID and passphrase of your wifi...
 
-1. Create a wpa_supplicant.conf fragment for the wifi-key and SSID
+1. Create a ``wpa_supplicant.conf ``fragment for the wifi-key and SSID
 
 ``` sh
 mkdir digitalrooster
